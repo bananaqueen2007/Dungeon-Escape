@@ -6,7 +6,7 @@ bool SaveIO::saveToFile(const Player& player)
     std::ofstream outFile("save.txt");
     if (!outFile.is_open())
     {
-        std::cout << "存档失败！无法打开save.txt" << std::endl;
+        std::cout << "存档失败！无法打开savw.txt！" << std::endl;
         return false;
     }
 
@@ -28,7 +28,7 @@ bool SaveIO::loadFromFile(Player& player)
     std::ifstream inFile("save.txt");
     if (!inFile.is_open())
     {
-        std::cout << "❌读档失败，未找到save.txt存档文件！" << std::endl;
+        std::cout << "❌读档失败，未找到save.txt存档文件" << std::endl;
         return false;
     }
 
@@ -39,6 +39,6 @@ bool SaveIO::loadFromFile(Player& player)
     inFile >> player.currentRoomId;
 
     inFile.close();
-    std::cout << "✅读档成功！欢迎回来，" << player.name << std::endl;
+    std::cout << "✅读档成功，欢迎回来！" << player.name << std::endl;
     return true;
 }

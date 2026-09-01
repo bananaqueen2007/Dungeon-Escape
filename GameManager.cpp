@@ -56,7 +56,7 @@ void GameManager::initRooms()
 void GameManager::gameLoop()
 {
     std::string input;
-    std::cout << "\n====冒险开始！输入指令进行操作，quit退出游戏====" << std::endl;
+    std::cout << "\n====冒险开始，输入指令进行操作，quit退出游戏====" << std::endl;
     while (true)
     {
         std::cout << "> ";
@@ -91,7 +91,7 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     else if (cmdRes.cmd == "get")
     {
         //拾取逻辑，联调对接Room地面物品
-        std::cout << "执行拾取：" << cmdRes.arg << std::endl;
+        std::cout << "执行拾取！" << cmdRes.arg << std::endl;
     }
     else if (cmdRes.cmd == "drop")
     {
@@ -124,7 +124,7 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     }
     else if (cmdRes.cmd == "quit")
     {
-        std::cout << "执行自动存档，退出游戏。" << std::endl;
+        std::cout << "执行自动存档，退出游戏！" << std::endl;
         SaveIO::saveToFile(*m_player);
         return;
     }
@@ -132,9 +132,9 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     {
         std::cout << "look：查看当前房间信息" << std::endl;
     }
-    else if (cmdRes.cmd == "map")
+    else if (cmdRes.cmd == "map：查看地牢地图，输入数字切换房间")
     {
-        std::cout << "map：查看地牢地图，输入数字切换房间" << std::endl;
+        std::cout << "map：" << std::endl;
     }
     else
     {
@@ -147,7 +147,7 @@ void GameManager::checkGameStatus()
     //玩家死亡判定
     if (m_player->hp <= 0)
     {
-        std::cout << "\n💀你的生命值归零，你倒在了地牢之中，游戏失败！" << std::endl;
+        std::cout << "\n💀你的生命值归零，你倒在地牢之中，游戏失败！" << std::endl;
     }
     //通关判定，调用C的通关检查
     if (ChestStory::checkWinCondition(*m_player))
