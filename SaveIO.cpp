@@ -6,20 +6,20 @@ bool SaveIO::saveToFile(const Player& player)
     std::ofstream outFile("save.txt");
     if (!outFile.is_open())
     {
-        std::cout << "å­˜æ¡£å¤±è´¥ï¼æ— æ³•æ‰“å¼€save.txt" << std::endl;
+        std::cout << "´æµµÊ§°Ü£¡ÎÞ·¨´ò¿ªsave.txt" << std::endl;
         return false;
     }
 
-    //åŸºç¡€è§’è‰²å±žæ€§
+    //»ù´¡½ÇÉ«ÊôÐÔ
     outFile << player.name << std::endl;
     outFile << player.hp << " " << player.maxHp << std::endl;
     outFile << player.baseAtk << " " << player.totalAtk << std::endl;
     outFile << player.gold << std::endl;
     outFile << player.currentRoomId << std::endl;
 
-    //è¿™é‡Œç®€åŒ–ï¼šè£…å¤‡ã€èƒŒåŒ…ã€çš®è‚¤ï¼Œè”è°ƒé˜¶æ®µæ‰©å±•å®Œæ•´å†™å…¥é€»è¾‘
+    //ÕâÀï¼ò»¯£º×°±¸¡¢±³°ü¡¢Æ¤·ô£¬Áªµ÷½×¶ÎÀ©Õ¹ÍêÕûÐ´ÈëÂß¼­
     outFile.close();
-    std::cout << "âœ…å­˜æ¡£æˆåŠŸï¼Œå·²å†™å…¥save.txt" << std::endl;
+    std::cout << "´æµµ³É¹¦£¬ÒÑÐ´Èësave.txt" << std::endl;
     return true;
 }
 
@@ -28,7 +28,7 @@ bool SaveIO::loadFromFile(Player& player)
     std::ifstream inFile("save.txt");
     if (!inFile.is_open())
     {
-        std::cout << "âŒè¯»æ¡£å¤±è´¥ï¼Œæœªæ‰¾åˆ°save.txtå­˜æ¡£æ–‡ä»¶ï¼" << std::endl;
+        std::cout << "¶ÁµµÊ§°Ü£¬Î´ÕÒµ½save.txt´æµµÎÄ¼þ£¡" << std::endl;
         return false;
     }
 
@@ -39,6 +39,7 @@ bool SaveIO::loadFromFile(Player& player)
     inFile >> player.currentRoomId;
 
     inFile.close();
-    std::cout << "âœ…è¯»æ¡£æˆåŠŸï¼æ¬¢è¿Žå›žæ¥ï¼Œ" << player.name << std::endl;
+    std::cout << "¶Áµµ³É¹¦£¡»¶Ó­»ØÀ´£¬" << player.name << std::endl;
     return true;
 }
+

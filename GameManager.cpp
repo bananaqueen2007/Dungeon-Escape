@@ -4,60 +4,60 @@
 void GameManager::showMainMenu()
 {
     int select = 0;
-    while (true)
+    while(true)
     {
-        std::cout << "\n========åœ°ç‰¢é€ƒäº¡========" << std::endl;
-        std::cout << "1. æ–°å»ºæ¸¸æˆ" << std::endl;
-        std::cout << "2. ç»§ç»­æ¸¸æˆï¼ˆè¯»å–å­˜æ¡£ï¼‰" << std::endl;
-        std::cout << "è¯·è¾“å…¥é€‰æ‹©ï¼š";
+        std::cout << "\n========µØÀÎÌÓÍö========" << std::endl;
+        std::cout << "1. ĞÂ½¨ÓÎÏ·" << std::endl;
+        std::cout << "2. ¼ÌĞøÓÎÏ·£¨¶ÁÈ¡´æµµ£©" << std::endl;
+        std::cout << "ÇëÊäÈëÑ¡Ôñ£º";
         std::cin >> select;
-        std::cin.ignore(); //å¸æ”¶æ¢è¡Œç¬¦
+        std::cin.ignore(); //ÎüÊÕ»»ĞĞ·û
 
-        if (select == 1)
+        if(select == 1)
         {
             std::string playerName;
-            std::cout << "è¯·è¾“å…¥å†’é™©è€…åå­—ï¼š";
+            std::cout << "ÇëÊäÈëÃ°ÏÕÕßÃû×Ö£º";
             std::getline(std::cin, playerName);
             m_player = std::make_unique<Player>(playerName);
             initRooms();
             gameLoop();
             break;
         }
-        else if (select == 2)
+        else if(select == 2)
         {
-            //ä¸´æ—¶åˆ›å»ºç©ºç©å®¶å¯¹è±¡ï¼Œè¯»æ¡£è¦†ç›–æ•°æ®
+            //ÁÙÊ±´´½¨¿ÕÍæ¼Ò¶ÔÏó£¬¶Áµµ¸²¸ÇÊı¾İ
             m_player = std::make_unique<Player>("temp");
             bool ok = SaveIO::loadFromFile(*m_player);
-            if (ok)
+            if(ok)
             {
                 initRooms();
                 gameLoop();
             }
             else
             {
-                std::cout << "æ— æ³•åŠ è½½å­˜æ¡£ï¼Œè¯·é€‰æ‹©æ–°å»ºæ¸¸æˆï¼" << std::endl;
+                std::cout << "ÎŞ·¨¼ÓÔØ´æµµ£¬ÇëÑ¡ÔñĞÂ½¨ÓÎÏ·£¡" << std::endl;
             }
             break;
         }
         else
         {
-            std::cout << "è¾“å…¥æ— æ•ˆï¼Œè¯·è¾“å…¥1æˆ–è€…2ï¼" << std::endl;
+            std::cout << "ÊäÈëÎŞĞ§£¬ÇëÊäÈë1»òÕß2£¡" << std::endl;
         }
     }
 }
 
 void GameManager::initRooms()
 {
-    //æˆ¿é—´åˆå§‹åŒ–é€»è¾‘ï¼Œè°ƒç”¨ç»„é•¿Aå®ç°çš„æˆ¿é—´æ„å»ºæ¥å£
-    //æ­¤å¤„é¢„ç•™ï¼Œè”è°ƒæ—¶ç›´æ¥å¤ç”¨Aå†™å¥½çš„8ä¸ªæˆ¿é—´æ•°æ®
-    std::cout << "åœ°ç‰¢æˆ¿é—´èµ„æºåŠ è½½å®Œæˆ..." << std::endl;
+    //·¿¼ä³õÊ¼»¯Âß¼­£¬µ÷ÓÃ×é³¤AÊµÏÖµÄ·¿¼ä¹¹½¨½Ó¿Ú
+    //´Ë´¦Ô¤Áô£¬Áªµ÷Ê±Ö±½Ó¸´ÓÃAĞ´ºÃµÄ8¸ö·¿¼äÊı¾İ
+    std::cout << "µØÀÎ·¿¼ä×ÊÔ´¼ÓÔØÍê³É..." << std::endl;
 }
 
 void GameManager::gameLoop()
 {
     std::string input;
-    std::cout << "\n====å†’é™©å¼€å§‹ï¼è¾“å…¥æŒ‡ä»¤è¿›è¡Œæ“ä½œï¼Œquité€€å‡ºæ¸¸æˆ====" << std::endl;
-    while (true)
+    std::cout << "\n====Ã°ÏÕ¿ªÊ¼£¡ÊäÈëÖ¸Áî½øĞĞ²Ù×÷£¬quitÍË³öÓÎÏ·====" << std::endl;
+    while(true)
     {
         std::cout << "> ";
         std::getline(std::cin, input);
@@ -65,10 +65,10 @@ void GameManager::gameLoop()
         handleCommand(res);
         checkGameStatus();
 
-        //ç©å®¶æ­»äº¡ï¼Œè·³å‡ºä¸»å¾ªç¯
-        if (m_player->hp <= 0)
+        //Íæ¼ÒËÀÍö£¬Ìø³öÖ÷Ñ­»·
+        if(m_player->hp <= 0)
         {
-            std::cout << "æ¸¸æˆç»“æŸï¼" << std::endl;
+            std::cout << "ÓÎÏ·½áÊø£¡" << std::endl;
             break;
         }
     }
@@ -76,82 +76,83 @@ void GameManager::gameLoop()
 
 void GameManager::handleCommand(const CommandResult& cmdRes)
 {
-    if (cmdRes.cmd == "inv")
+    if(cmdRes.cmd == "inv")
     {
         m_player->showInventory();
     }
-    else if (cmdRes.cmd == "skin")
+    else if(cmdRes.cmd == "skin")
     {
         m_player->showSkinList();
     }
-    else if (cmdRes.cmd == "equip")
+    else if(cmdRes.cmd == "equip")
     {
         m_player->equipItem(cmdRes.arg);
     }
-    else if (cmdRes.cmd == "get")
+    else if(cmdRes.cmd == "get")
     {
-        //æ‹¾å–é€»è¾‘ï¼Œè”è°ƒå¯¹æ¥Roomåœ°é¢ç‰©å“
-        std::cout << "æ‰§è¡Œæ‹¾å–ï¼š" << cmdRes.arg << std::endl;
+        //Ê°È¡Âß¼­£¬Áªµ÷¶Ô½ÓRoomµØÃæÎïÆ·
+        std::cout << "Ö´ĞĞÊ°È¡£º" << cmdRes.arg << std::endl;
     }
-    else if (cmdRes.cmd == "drop")
+    else if(cmdRes.cmd == "drop")
     {
         m_player->dropItem(cmdRes.arg);
     }
-    else if (cmdRes.cmd == "kill")
+    else if(cmdRes.cmd == "kill")
     {
-        //æˆ˜æ–—ï¼Œè°ƒç”¨é˜Ÿå‘˜Cæˆ˜æ–—æ¨¡å—
+        //Õ½¶·£¬µ÷ÓÃ¶ÓÔ±CÕ½¶·Ä£¿é
         BattleSystem::startFight(*m_player, *m_roomList[0], cmdRes.arg);
     }
-    else if (cmdRes.cmd == "talk")
+    else if(cmdRes.cmd == "talk")
     {
         ShopNpcLogic::npcTalk(*m_roomList[0], cmdRes.arg);
     }
-    else if (cmdRes.cmd == "shop")
+    else if(cmdRes.cmd == "shop")
     {
         ShopNpcLogic::openShop(*m_roomList[0]);
     }
-    else if (cmdRes.cmd == "buy")
+    else if(cmdRes.cmd == "buy")
     {
-        ShopNpcLogic::buyGoods(*m_player, *m_roomList[0], cmdRes.arg);
+        ShopNpcLogic::buyGoods(*m_player,*m_roomList[0],cmdRes.arg);
     }
-    else if (cmdRes.cmd == "sell")
+    else if(cmdRes.cmd == "sell")
     {
-        ShopNpcLogic::sellGoods(*m_player, cmdRes.arg);
+        ShopNpcLogic::sellGoods(*m_player,cmdRes.arg);
     }
-    else if (cmdRes.cmd == "save")
+    else if(cmdRes.cmd == "save")
     {
         SaveIO::saveToFile(*m_player);
     }
-    else if (cmdRes.cmd == "quit")
+    else if(cmdRes.cmd == "quit")
     {
-        std::cout << "æ‰§è¡Œè‡ªåŠ¨å­˜æ¡£ï¼Œé€€å‡ºæ¸¸æˆã€‚" << std::endl;
+        std::cout << "Ö´ĞĞ×Ô¶¯´æµµ£¬ÍË³öÓÎÏ·¡£" << std::endl;
         SaveIO::saveToFile(*m_player);
         return;
     }
-    else if (cmdRes.cmd == "look")
+    else if(cmdRes.cmd == "look")
     {
-        std::cout << "lookï¼šæŸ¥çœ‹å½“å‰æˆ¿é—´ä¿¡æ¯" << std::endl;
+        std::cout << "look£º²é¿´µ±Ç°·¿¼äĞÅÏ¢" << std::endl;
     }
-    else if (cmdRes.cmd == "map")
+    else if(cmdRes.cmd == "map")
     {
-        std::cout << "mapï¼šæŸ¥çœ‹åœ°ç‰¢åœ°å›¾ï¼Œè¾“å…¥æ•°å­—åˆ‡æ¢æˆ¿é—´" << std::endl;
+        std::cout << "map£º²é¿´µØÀÎµØÍ¼£¬ÊäÈëÊı×ÖÇĞ»»·¿¼ä" << std::endl;
     }
     else
     {
-        std::cout << "æœªçŸ¥æŒ‡ä»¤ï¼Œè¯·é‡æ–°è¾“å…¥ï¼" << std::endl;
+        std::cout << "Î´ÖªÖ¸Áî£¬ÇëÖØĞÂÊäÈë£¡" << std::endl;
     }
 }
 
 void GameManager::checkGameStatus()
 {
-    //ç©å®¶æ­»äº¡åˆ¤å®š
-    if (m_player->hp <= 0)
+    //Íæ¼ÒËÀÍöÅĞ¶¨
+    if(m_player->hp <= 0)
     {
-        std::cout << "\nğŸ’€ä½ çš„ç”Ÿå‘½å€¼å½’é›¶ï¼Œä½ å€’åœ¨äº†åœ°ç‰¢ä¹‹ä¸­ï¼Œæ¸¸æˆå¤±è´¥ï¼" << std::endl;
+        std::cout << "\nÄãµÄÉúÃüÖµ¹éÁã£¬Äãµ¹ÔÚÁËµØÀÎÖ®ÖĞ£¬ÓÎÏ·Ê§°Ü£¡" << std::endl;
     }
-    //é€šå…³åˆ¤å®šï¼Œè°ƒç”¨Cçš„é€šå…³æ£€æŸ¥
-    if (ChestStory::checkWinCondition(*m_player))
+    //Í¨¹ØÅĞ¶¨£¬µ÷ÓÃCµÄÍ¨¹Ø¼ì²é
+    if(ChestStory::checkWinCondition())
     {
-        std::cout << "ğŸ‰æ­å–œé€šå…³åœ°ç‰¢é€ƒäº¡ï¼" << std::endl;
+        std::cout << "¹§Ï²Í¨¹ØµØÀÎÌÓÍö£¡" << std::endl;
     }
 }
+
