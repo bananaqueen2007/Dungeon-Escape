@@ -19,7 +19,7 @@ CommandResult CommandParser::parse(const std::string& input)
     if (start != std::string::npos)
     {
         size_t end = remain.find_last_not_of(" \t");
-        res.arg = remain.substr(start, end?start + 1);
+        res.arg = remain.substr(start, end - start + 1);
     }
     return res;
 }
