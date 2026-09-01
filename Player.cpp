@@ -8,54 +8,36 @@ Player::Player(std::string playerName)
     baseAtk = 20;
     totalAtk = 20;
     gold = 200;
-    currentRoomId = 0; //初始地牢入口
+    currentRoomId = 1;
+    hasBoneKey = false;
 
-    //毒素初始化
-    poisoned = false;
-    poisonTurns = 0;
-
-    //临时buff初始化
     tempAtkBuff = 0;
     tempBuffTurn = 0;
-    damageReduceRate = 1.0;
+    damageReduce = 1.0;
+    reduceTurn = 0;
+    poisonTurn = 0;
 
     equipWeapon = nullptr;
     equipCloak = nullptr;
-
     backpack.clear();
     skinList.clear();
 }
 
 void Player::calcTotalAttack()
 {
-    totalAtk = baseAtk;
+    totalAtk = baseAtk + tempAtkBuff;
     if (equipWeapon != nullptr)
     {
         totalAtk += equipWeapon->atkBonus;
     }
-    totalAtk += tempAtkBuff;
 }
 
-void Player::takeDamage(int rawDamage)
+void Player::takeDamage(int damage)
 {
-    int realDmg = static_cast<int>(rawDamage * damageReduceRate);
+    int realDmg = static_cast<int>(damage * damageReduce);
     hp -= realDmg;
     if (hp < 0) hp = 0;
     std::cout << name << " 受到 " << realDmg << " 点伤害！剩余血量：" << hp << std::endl;
-}
-
-void Player::decreaseBuffTurn()
-{
-    if (tempBuffTurn > 0)
-    {
-        tempBuffTurn--;
-        if (tempBuffTurn <= 0)
-        {
-            tempAtkBuff = 0;
-            std::cout << "鸡血攻击buff效果消失\n";
-            calcTotalAttack();
-        }
-    }
 }
 
 bool Player::pickUpItem(std::shared_ptr<Item> item)
@@ -65,7 +47,6 @@ bool Player::pickUpItem(std::shared_ptr<Item> item)
         std::cout << "背包已满，无法拾取物品！" << std::endl;
         return false;
     }
-    //物品堆叠
     for (auto& p : backpack)
     {
         if (p->name == item->name)
@@ -86,14 +67,12 @@ std::shared_ptr<Item> Player::dropItem(const std::string& itemName)
         if (backpack[i]->name == itemName)
         {
             auto res = backpack[i];
-            //丢弃正在穿戴武器
             if (equipWeapon != nullptr && equipWeapon->name == itemName)
             {
                 equipWeapon.reset();
                 calcTotalAttack();
                 std::cout << "卸下已装备武器！" << std::endl;
             }
-            //丢弃穿戴披风
             if (equipCloak != nullptr && equipCloak->name == itemName)
             {
                 equipCloak.reset();
@@ -152,6 +131,7 @@ bool Player::useItem(const std::string& itemName)
             {
                 backpack.erase(backpack.begin() + i);
             }
+            calcTotalAttack();
             return true;
         }
     }
@@ -164,6 +144,9 @@ void Player::showInventory()
     std::cout << "\n===== 角色背包面板 =====" << std::endl;
     std::cout << "姓名:" << name << " 血量:" << hp << "/" << maxHp << std::endl;
     std::cout << "基础攻击:" << baseAtk << "总攻击:" << totalAtk << "金币:" << gold << std::endl;
+    std::cout << "宝石收集数量:" << ChestStory::gemList.size() << "/8 ";
+    if (hasBoneKey) std::cout << "【持有骸骨密室钥匙】";
+    std::cout << std::endl;
 
     if (equipWeapon)
         std::cout << "已装备武器:" << equipWeapon->name << std::endl;
@@ -184,7 +167,7 @@ void Player::showInventory()
     {
         for (auto& item : backpack)
         {
-            std::cout << "[" << item->name << "] x" << item->stackCount << " | " << item->desc << std::endl;
+            std::cout << "[" << item->name << "] x" << item->stackCount << " | " << item->desc << "【" << item->type << "】" << std::endl;
         }
     }
     std::cout << "======================\n" << std::endl;

@@ -147,7 +147,7 @@ void GameManager::checkGameStatus()
     //玩家死亡判定
     if(m_player->hp <= 0)
     {
-        std::cout << "\n??你的生命值归零，你倒在了地牢之中，游戏失败！" << std::endl;
+        std::cout << "\n你的生命值归零，你倒在了地牢之中，游戏失败！" << std::endl;
     }
     //通关判定，调用C的通关检查
     if(ChestStory::checkWinCondition())
