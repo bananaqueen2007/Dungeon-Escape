@@ -150,9 +150,9 @@ void GameManager::checkGameStatus()
         std::cout << "\n??你的生命值归零，你倒在了地牢之中，游戏失败！" << std::endl;
     }
     //通关判定，调用C的通关检查
-    if(ChestStory::checkWinCondition(*m_player))
+    if(ChestStory::checkWinCondition())
     {
-        std::cout << "??恭喜通关地牢逃亡！" << std::endl;
+        std::cout << "恭喜通关地牢逃亡！" << std::endl;
     }
 }
 
