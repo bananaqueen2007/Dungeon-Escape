@@ -4,35 +4,32 @@
 #include <vector>
 #include <memory>
 #include "Monster.h"
-#include "NPC.h"
+#include "Npc.h"
+#include "Item.h"
 
-class Room
+struct Room
 {
-public:
     int id;
     std::string name;
     std::string description;
-    bool isLocked;
+    bool locked;
+    bool giveKey;
     bool chestOpened;
 
-    std::vector<std::shared_ptr<Item>> groundItems;
     std::vector<std::unique_ptr<Monster>> monsters;
-    std::vector<std::shared_ptr<NPC>> npcs;
+    std::vector<std::unique_ptr<Npc>> npcs;
+    std::vector<std::shared_ptr<Item>> groundItems; //地面物品 get/drop使用
 
-    Room(int id_, std::string name_, std::string desc_)
-        : id(id_), name(name_), description(desc_), isLocked(false), chestOpened(false) {
-    }
-
-    void showRoomInfo()
-    {
-        std::cout << "\n====【" << name << "】 ID:" << id << " ====\n";
-        std::cout << description << "\n";
-        if (isLocked)
-        {
-            std::cout << "⚠该房间房门处于上锁状态。\n";
-        }
-        std::cout << "====================================\n";
-    }
+    Room(int id_, std::string n_, std::string d_, bool lock_, bool keyRoom);
 };
+
+//初始化全部8个房间，填充怪物、NPC、地面道具、商人商品
+void initAllRooms(std::vector<std::shared_ptr<Room>>& roomList);
+
+//map处理房间移动逻辑：增加规则，房间还有存活怪物不允许离开
+bool moveToRoom(int targetId, Player& player, std::vector<std::shared_ptr<Room>>& roomList);
+
+//检查当前房间是否还有存活怪物
+bool roomHasAliveMonster(Room& curRoom);
 
 #endif
