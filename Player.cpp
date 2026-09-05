@@ -1,4 +1,5 @@
 #include "Player.h"
+#include"ChestStory.h"
 
 Player::Player(std::string playerName)
 {

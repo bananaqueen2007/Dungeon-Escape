@@ -1,4 +1,11 @@
 #include "SaveIO.h"
+#pragma once
+#include "Player.h"
+#include "Room.h"
+#include"ChestStory.h"
+#include <vector>
+#include <memory>   // shared_ptr
+#include <fstream>
 #include <iostream>
 
 bool SaveIO::saveToFile(const Player& player, const std::vector<std::shared_ptr<Room>>& roomList)

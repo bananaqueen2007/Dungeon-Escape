@@ -2,6 +2,8 @@
 #define ITEM_H
 #include <string>
 
+class Player;
+
 struct Item
 {
     std::string name;

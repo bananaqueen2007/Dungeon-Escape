@@ -2,6 +2,7 @@
 #define MONSTER_H
 #include <string>
 #include <memory>
+#include <vector>
 #include "Item.h"
 
 struct Monster

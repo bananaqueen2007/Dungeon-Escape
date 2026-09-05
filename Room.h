@@ -6,6 +6,7 @@
 #include "Monster.h"
 #include "Npc.h"
 #include "Item.h"
+#include "Player.h"
 
 struct Room
 {
@@ -17,7 +18,8 @@ struct Room
     bool chestOpened;
 
     std::vector<std::unique_ptr<Monster>> monsters;
-    std::vector<std::unique_ptr<Npc>> npcs;
+    // =========修改这里：unique_ptr → shared_ptr，适配make_shared=========
+    std::vector<std::shared_ptr<Npc>> npcs;
     std::vector<std::shared_ptr<Item>> groundItems; //地面物品 get/drop使用
 
     Room(int id_, std::string n_, std::string d_, bool lock_, bool keyRoom);
