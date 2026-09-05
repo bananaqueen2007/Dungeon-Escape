@@ -1,17 +1,23 @@
 #include "ShopNpcLogic.h"
+#include"ChestStory.h"
 #include <iostream>
+#include "Player.h"
+#include "Room.h"
+#include "Npc.h"
+#include "Merchant.h"
 
-void ShopNpcLogic::npcTalk(Room& room, const std::string& npcName)
+//增加Player& player参数，用于鼠鼠大王剧情
+void ShopNpcLogic::npcTalk(Room& room, Player& player, const std::string& npcName)
 {
     for (auto& npc : room.npcs)
     {
         if (npc->name == npcName)
         {
             npc->talk();
-            //鼠鼠大王特殊交互
+            //鼠鼠大王特殊交互，传入player，不再传room
             if (npcName == "鼠鼠大王")
             {
-                ChestStory::meetMouseKing(*(&room));
+                ChestStory::meetMouseKing(player);
             }
             return;
         }
