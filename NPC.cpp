@@ -1,9 +1,9 @@
-ï»¿#include "Npc.h"
+#include "Npc.h"
 #include <iostream>
 
 Npc::Npc(std::string n, std::string t) :name(n), talkText(t) {}
 
 void Npc::talk()
 {
-    std::cout << "ã€" << name << "ã€‘ï¼š" << talkText << "\n";
+    std::cout << "¡¾" << name << "¡¿£º" << talkText << "\n";
 }

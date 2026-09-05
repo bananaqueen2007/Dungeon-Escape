@@ -1,4 +1,4 @@
-ï»¿#ifndef ROOM_H
+#ifndef ROOM_H
 #define ROOM_H
 #include <string>
 #include <vector>
@@ -18,20 +18,20 @@ struct Room
     bool chestOpened;
 
     std::vector<std::unique_ptr<Monster>> monsters;
-    // =========ä¿®æ”¹è¿™é‡Œï¼šunique_ptr â†’ shared_ptrï¼Œé€‚é…make_shared=========
+    // =========ĞŞ¸ÄÕâÀï£ºunique_ptr ¡ú shared_ptr£¬ÊÊÅämake_shared=========
     std::vector<std::shared_ptr<Npc>> npcs;
-    std::vector<std::shared_ptr<Item>> groundItems; //åœ°é¢ç‰©å“ get/dropä½¿ç”¨
+    std::vector<std::shared_ptr<Item>> groundItems; //µØÃæÎïÆ· get/dropÊ¹ÓÃ
 
     Room(int id_, std::string n_, std::string d_, bool lock_, bool keyRoom);
 };
 
-//åˆå§‹åŒ–å…¨éƒ¨8ä¸ªæˆ¿é—´ï¼Œå¡«å……æ€ªç‰©ã€NPCã€åœ°é¢é“å…·ã€å•†äººå•†å“
+//³õÊ¼»¯È«²¿8¸ö·¿¼ä£¬Ìî³ä¹ÖÎï¡¢NPC¡¢µØÃæµÀ¾ß¡¢ÉÌÈËÉÌÆ·
 void initAllRooms(std::vector<std::shared_ptr<Room>>& roomList);
 
-//mapå¤„ç†æˆ¿é—´ç§»åŠ¨é€»è¾‘ï¼šå¢åŠ è§„åˆ™ï¼Œæˆ¿é—´è¿˜æœ‰å­˜æ´»æ€ªç‰©ä¸å…è®¸ç¦»å¼€
+//map´¦Àí·¿¼äÒÆ¶¯Âß¼­£ºÔö¼Ó¹æÔò£¬·¿¼ä»¹ÓĞ´æ»î¹ÖÎï²»ÔÊĞíÀë¿ª
 bool moveToRoom(int targetId, Player& player, std::vector<std::shared_ptr<Room>>& roomList);
 
-//æ£€æŸ¥å½“å‰æˆ¿é—´æ˜¯å¦è¿˜æœ‰å­˜æ´»æ€ªç‰©
+//¼ì²éµ±Ç°·¿¼äÊÇ·ñ»¹ÓĞ´æ»î¹ÖÎï
 bool roomHasAliveMonster(Room& curRoom);
 
 #endif

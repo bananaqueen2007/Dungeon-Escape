@@ -1,24 +1,24 @@
-ï»¿#include "ChestStory.h"
+#include "ChestStory.h"
 #include <iostream>
 
 std::vector<std::string> ChestStory::gemList;
 
 bool ChestStory::meetMouseKing(Player& player)
 {
-    std::cout << "\nã€é¼ é¼ å¤§ç‹å‡ºç°åœ¨åœ°çª–å£ï¼ŒæŒ¡ä½äº†ä½ çš„å»è·¯ï¼ã€‘" << std::endl;
-    std::cout << "é€‰æ‹©ï¼šæ˜¯å¦æ”»å‡»é¼ é¼ å¤§ç‹ï¼Ÿ(y/n)";
+    std::cout << "\n¡¾ÊóÊó´óÍõ³öÏÖÔÚµØ½Ñ¿Ú£¬µ²×¡ÁËÄãµÄÈ¥Â·£¡¡¿" << std::endl;
+    std::cout << "Ñ¡Ôñ£ºÊÇ·ñ¹¥»÷ÊóÊó´óÍõ£¿(y/n)";
     char op;
     std::cin >> op;
     std::cin.ignore();
     if (op == 'y' || op == 'Y')
     {
-        std::cout << "ä½ ç«Ÿæ•¢æ”»å‡»é¼ é¼ å¤§ç‹ï¼ä½ è¢«è¸¢å›äº†åœ°ç‰¢å…¥å£ã€‚" << std::endl;
+        std::cout << "Äã¾¹¸Ò¹¥»÷ÊóÊó´óÍõ£¡Äã±»Ìß»ØÁËµØÀÎÈë¿Ú¡£" << std::endl;
         player.currentRoomId = 1;
         return false;
     }
     else
     {
-        std::cout << "å–„è‰¯çš„ä½ è·å¾—é¼ é¼ å¤§ç‹çš„ç¤¼ç‰©ï¼Œå¾—åˆ°éª¸éª¨å¯†å®¤é’¥åŒ™ä¸1500é‡‘å¸ï¼" << std::endl;
+        std::cout << "ÉÆÁ¼µÄÄã»ñµÃÊóÊó´óÍõµÄÀñÎï£¬µÃµ½º¡¹ÇÃÜÊÒÔ¿³×Óë1500½ğ±Ò£¡" << std::endl;
         player.gold += 1500;
         player.hasBoneKey = true;
         return true;
@@ -29,70 +29,70 @@ void ChestStory::openRoomChest(Player& player, Room& curRoom)
 {
     if (curRoom.chestOpened)
     {
-        std::cout << "è¿™ä¸ªæˆ¿é—´çš„å®ç®±å·²ç»è¢«æ‰“å¼€è¿‡ï¼Œé‡Œé¢ç©ºç©ºå¦‚ä¹Ÿã€‚" << std::endl;
+        std::cout << "Õâ¸ö·¿¼äµÄ±¦ÏäÒÑ¾­±»´ò¿ª¹ı£¬ÀïÃæ¿Õ¿ÕÈçÒ²¡£" << std::endl;
         return;
     }
     curRoom.chestOpened = true;
-    std::cout << "ä½ æ‰“å¼€äº†æˆ¿é—´çš„å®ç®±ï¼" << std::endl;
-    //å„ä¸ªæˆ¿é—´å®ç®±é€»è¾‘
+    std::cout << "Äã´ò¿ªÁË·¿¼äµÄ±¦Ïä£¡" << std::endl;
+    //¸÷¸ö·¿¼ä±¦ÏäÂß¼­
     switch (curRoom.id)
     {
-    case 1: //å¹½æš—å›å»Š
-        player.pickUpItem(std::make_shared<Item>("çƒ¤é¸¡", "æ¢å¤30ç”Ÿå‘½", "æ¶ˆè€—å“", 0));
+    case 1: //ÓÄ°µ»ØÀÈ
+        player.pickUpItem(std::make_shared<Item>("¿¾¼¦", "»Ö¸´30ÉúÃü", "ÏûºÄÆ·", 0));
         break;
-    case 2: //éª¸éª¨å¯†å®¤
-        player.pickUpItem(std::make_shared<Item>("å¸è¡€åˆ€", "æ”»å‡»+10æ”»å‡»å›è¡€", "æ­¦å™¨", 10));
+    case 2: //º¡¹ÇÃÜÊÒ
+        player.pickUpItem(std::make_shared<Item>("ÎüÑªµ¶", "¹¥»÷+10¹¥»÷»ØÑª", "ÎäÆ÷", 10));
         break;
-    case 3: //è´¸æ˜“çŸ³å®¤èµŒåšå®ç®±
+    case 3: //Ã³Ò×Ê¯ÊÒ¶Ä²©±¦Ïä
     {
-        std::cout << "æŠ•å…¥é‡‘å¸è¿›è¡ŒèµŒåš(è¾“å…¥æ•°å­—):";
+        std::cout << "Í¶Èë½ğ±Ò½øĞĞ¶Ä²©(ÊäÈëÊı×Ö):";
         int bet; std::cin >> bet; std::cin.ignore();
         if (rand() % 2 == 0)
         {
             player.gold += bet;
-            std::cout << "ğŸ‰ç¿»å€ï¼è·å¾—" << bet << "é‡‘å¸ï¼";
+            std::cout << "??·­±¶£¡»ñµÃ" << bet << "½ğ±Ò£¡";
         }
         else {
             player.gold -= bet;
-            std::cout << "ğŸ’¸é‡‘å¸å…¨éƒ¨æ¸…é›¶ï¼";
+            std::cout << "??½ğ±ÒÈ«²¿ÇåÁã£¡";
         }
     }
     break;
-    case 4: //ç§¯æ°´çŸ³å®¤
+    case 4: //»ıË®Ê¯ÊÒ
         if (player.totalAtk >= 50)
         {
             player.gold += 500;
-            std::cout << "âœ…æ”»å‡»åŠ›è¶³å¤Ÿï¼Œæ‹¿åˆ°500é‡‘å¸ï¼";
+            std::cout << "?¹¥»÷Á¦×ã¹»£¬ÄÃµ½500½ğ±Ò£¡";
         }
         else {
             player.hp -= 20;
-            std::cout << "âŒæ”»å‡»åŠ›ä¸è¶³ï¼ŒæŸå¤±20ç”Ÿå‘½ï¼";
+            std::cout << "?¹¥»÷Á¦²»×ã£¬ËğÊ§20ÉúÃü£¡";
         }
         break;
-    case 5://é»‘æš—æ°´ç‰¢å¸è¡€å®ç®±
+    case 5://ºÚ°µË®ÀÎÎüÑª±¦Ïä
         player.hp -= 20;
         player.gold += 1000;
-        std::cout << "æŸå¤±20ç”Ÿå‘½ï¼Œè·å¾—1000é‡‘å¸ï¼";
+        std::cout << "ËğÊ§20ÉúÃü£¬»ñµÃ1000½ğ±Ò£¡";
         break;
-    case 6://è››ä¸å¸˜æ´
+    case 6://ÖëË¿Á±¶´
     {
-        std::cout << "ç¢°å®ç®±ï¼Ÿ(y/n):"; char c; std::cin >> c; std::cin.ignore();
-        if (c == 'y' || c == 'Y') { player.hp -= 10; std::cout << "è¢«èœ˜è››è¢­å‡»ï¼ŒæŸå¤±10è¡€é‡ï¼"; }
+        std::cout << "Åö±¦Ïä£¿(y/n):"; char c; std::cin >> c; std::cin.ignore();
+        if (c == 'y' || c == 'Y') { player.hp -= 10; std::cout << "±»Ö©ÖëÏ®»÷£¬ËğÊ§10ÑªÁ¿£¡"; }
     }
     break;
-case7://åºŸå¼ƒåœ°çª–äºŒé€‰ä¸€
+case7://·ÏÆúµØ½Ñ¶şÑ¡Ò»
     {
-        std::cout << "1.çœ‹èµ·æ¥å¾ˆå¯ç–‘çš„è˜‘è‡  2.çœ‹èµ·æ¥å¾ˆç¾å‘³çš„è‹¹æœï¼Œè¯·é€‰æ‹©1/2ï¼š";
+        std::cout << "1.¿´ÆğÀ´ºÜ¿ÉÒÉµÄÄ¢¹½  2.¿´ÆğÀ´ºÜÃÀÎ¶µÄÆ»¹û£¬ÇëÑ¡Ôñ1/2£º";
         int sel; std::cin >> sel; std::cin.ignore();
         if (sel == 1)
         {
             player.hp = 0;
             player.currentRoomId = 1;
-            std::cout << "è˜‘è‡å‰§æ¯’ï¼æ—©å°±å‘Šè¯‰è¿‡ä½ å¾ˆå¯ç–‘äº†......";
+            std::cout << "Ä¢¹½¾ç¶¾£¡Ôç¾Í¸æËß¹ıÄãºÜ¿ÉÒÉÁË......";
         }
         else {
             player.maxHp += 20; player.hp += 20;
-            std::cout << "è‹¹æœéå¸¸ç¾å‘³ï¼Œæœ€å¤§ç”Ÿå‘½+20ï¼";
+            std::cout << "Æ»¹û·Ç³£ÃÀÎ¶£¬×î´óÉúÃü+20£¡";
         }
     }
     break;
@@ -104,9 +104,9 @@ case8:
 
 bool ChestStory::canSkipBattle(Player& player)
 {
-    if (player.equipCloak != nullptr && player.equipCloak->name == "æš—å½±æ–—ç¯·")
+    if (player.equipCloak != nullptr && player.equipCloak->name == "°µÓ°¶·Åñ")
     {
-        std::cout << "æš—å½±æ–—ç¯·ç”Ÿæ•ˆï¼Œä½ éšåŒ¿è¡Œè¸ªï¼Œè·³è¿‡æœ¬æ¬¡æˆ˜æ–—ï¼ä¸ä¼šè·å¾—ä»»ä½•æˆ˜æ–—æ‰è½ï¼\n";
+        std::cout << "°µÓ°¶·ÅñÉúĞ§£¬ÄãÒşÄäĞĞ×Ù£¬Ìø¹ı±¾´ÎÕ½¶·£¡²»»á»ñµÃÈÎºÎÕ½¶·µôÂä£¡\n";
         return true;
     }
     return false;
@@ -118,12 +118,12 @@ bool ChestStory::collectGem(Player& player, const std::string& gemName)
     {
         if (g == gemName)
         {
-            std::cout << "ä½ å·²ç»æ‹¥æœ‰è¯¥å®çŸ³ï¼" << std::endl;
+            std::cout << "ÄãÒÑ¾­ÓµÓĞ¸Ã±¦Ê¯£¡" << std::endl;
             return false;
         }
     }
     gemList.push_back(gemName);
-    std::cout << "è·å¾—å…³é”®å®çŸ³ï¼š" << gemName << "ï¼(" << gemList.size() << "/8)" << std::endl;
+    std::cout << "»ñµÃ¹Ø¼ü±¦Ê¯£º" << gemName << "£¡(" << gemList.size() << "/8)" << std::endl;
     return true;
 }
 
@@ -131,9 +131,9 @@ bool ChestStory::checkWinCondition(Player& player)
 {
     if (gemList.size() >= 8)
     {
-        std::cout << "\nâ˜…ä½ é›†é½å…¨éƒ¨8é¢—å®çŸ³ï¼åœ°ç‰¢å¤§é—¨ç¼“ç¼“å¼€å¯ï¼ä½ æˆåŠŸé€ƒå‡ºç”Ÿå¤©ï¼æ¸¸æˆé€šå…³â˜…" << std::endl;
+        std::cout << "\n¡ïÄã¼¯ÆëÈ«²¿8¿Å±¦Ê¯£¡µØÀÎ´óÃÅ»º»º¿ªÆô£¡Äã³É¹¦ÌÓ³öÉúÌì£¡ÓÎÏ·Í¨¹Ø¡ï" << std::endl;
         return true;
     }
-    std::cout << "å®çŸ³æ•°é‡ä¸è¶³ï¼Œè¿˜ä¸èƒ½æ‰“å¼€åœ°ç‰¢å‡ºå£å¤§é—¨ï¼å½“å‰æ”¶é›†ï¼š" << gemList.size() << "/8\n";
+    std::cout << "±¦Ê¯ÊıÁ¿²»×ã£¬»¹²»ÄÜ´ò¿ªµØÀÎ³ö¿Ú´óÃÅ£¡µ±Ç°ÊÕ¼¯£º" << gemList.size() << "/8\n";
     return false;
 }
