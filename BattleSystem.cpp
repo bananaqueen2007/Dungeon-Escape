@@ -1,9 +1,9 @@
-ï»¿#include "BattleSystem.h"
+#include "BattleSystem.h"
 #include "ChestStory.h"
 
 bool BattleSystem::startFight(Player& player, Room& currentRoom, const std::string& monsterName)
 {
-    //æš—å½±æ–—ç¯·è·³è¿‡æˆ˜æ–—
+    //°µÓ°¶·ÅñÌø¹ıÕ½¶·
     if (ChestStory::canSkipBattle(player))
     {
         return true;
@@ -24,49 +24,49 @@ bool BattleSystem::startFight(Player& player, Room& currentRoom, const std::stri
 
     if (targetMonster == nullptr)
     {
-        std::cout << "å½“å‰æˆ¿é—´æ²¡æœ‰è¯¥æ´»ç€çš„æ€ªç‰©ï¼" << std::endl;
+        std::cout << "µ±Ç°·¿¼äÃ»ÓĞ¸Ã»î×ÅµÄ¹ÖÎï£¡" << std::endl;
         return false;
     }
 
-    std::cout << "\n====æˆ˜æ–—å¼€å§‹ï¼å¯¹é˜µï¼š" << targetMonster->name << "====" << std::endl;
+    std::cout << "\n====Õ½¶·¿ªÊ¼£¡¶ÔÕó£º" << targetMonster->name << "====" << std::endl;
     int poisonTurn = player.poisonTurn;
 
     while (true)
     {
-        //ç©å®¶å›åˆ
+        //Íæ¼Ò»ØºÏ
         player.calcTotalAttack();
-        std::cout << "ã€ä½ çš„å›åˆã€‘ä½ çš„æ”»å‡»åŠ›ï¼š" << player.totalAtk << std::endl;
+        std::cout << "¡¾ÄãµÄ»ØºÏ¡¿ÄãµÄ¹¥»÷Á¦£º" << player.totalAtk << std::endl;
         targetMonster->hp -= player.totalAtk;
-        std::cout << "ä½ å¯¹" << targetMonster->name << "é€ æˆ " << player.totalAtk << "ç‚¹ä¼¤å®³" << std::endl;
+        std::cout << "Äã¶Ô" << targetMonster->name << "Ôì³É " << player.totalAtk << "µãÉËº¦" << std::endl;
 
-        //æ€ªç‰©æ­»äº¡
+        //¹ÖÎïËÀÍö
         if (targetMonster->hp <= 0)
         {
-            std::cout << targetMonster->name << " è¢«ä½ å‡»æ€ï¼" << std::endl;
+            std::cout << targetMonster->name << " ±»Äã»÷É±£¡" << std::endl;
             monsterDrop(player, currentRoom.monsters[idx]);
             return true;
         }
 
-        //æ€ªç‰©å›åˆ
-        std::cout << "ã€æ€ªç‰©å›åˆã€‘" << targetMonster->name << "å‘èµ·æ”»å‡»ï¼" << std::endl;
+        //¹ÖÎï»ØºÏ
+        std::cout << "¡¾¹ÖÎï»ØºÏ¡¿" << targetMonster->name << "·¢Æğ¹¥»÷£¡" << std::endl;
         player.takeDamage(targetMonster->attack);
 
-        //æ¯’èœ˜è››ä¸Šæ¯’
-        if (targetMonster->name == "æ¯’èœ˜è››" && poisonTurn <= 0)
+        //¶¾Ö©ÖëÉÏ¶¾
+        if (targetMonster->name == "¶¾Ö©Öë" && poisonTurn <= 0)
         {
             poisonTurn = 3;
             player.poisonTurn = poisonTurn;
-            std::cout << "ä½ è¢«æ¯’èœ˜è››æ”»å‡»åä¸­æ¯’äº†ï¼æ¥ä¸‹æ¥3å›åˆæ¯å›åˆæ‰£4æ»´è¡€ï¼" << std::endl;
+            std::cout << "Äã±»¶¾Ö©Öë¹¥»÷ºóÖĞ¶¾ÁË£¡½ÓÏÂÀ´3»ØºÏÃ¿»ØºÏ¿Û4µÎÑª£¡" << std::endl;
         }
 
-        //æ¯’ç´ æ•ˆæœ
+        //¶¾ËØĞ§¹û
         if (poisonTurn > 0)
         {
             poisonEffect(player, poisonTurn);
             player.poisonTurn = poisonTurn;
         }
 
-        //å›åˆç»“æŸæ¸…ç†buff
+        //»ØºÏ½áÊøÇåÀíbuff
         if (player.tempBuffTurn > 0) player.tempBuffTurn--;
         if (player.reduceTurn > 0)
         {
@@ -75,10 +75,10 @@ bool BattleSystem::startFight(Player& player, Room& currentRoom, const std::stri
         }
         if (player.tempBuffTurn <= 0) player.tempAtkBuff = 0;
 
-        //ç©å®¶æ­»äº¡åˆ¤å®š
+        //Íæ¼ÒËÀÍöÅĞ¶¨
         if (player.hp <= 0)
         {
-            std::cout << "ä½ çœ¼å‰ä¸€é»‘ï¼Œå€’åœ¨äº†åœ°ç‰¢ä¹‹ä¸­ã€‚æ¸¸æˆå¤±è´¥ï¼" << std::endl;
+            std::cout << "ÄãÑÛÇ°Ò»ºÚ£¬µ¹ÔÚÁËµØÀÎÖ®ÖĞ¡£ÓÎÏ·Ê§°Ü£¡" << std::endl;
             return false;
         }
     }
@@ -87,7 +87,7 @@ bool BattleSystem::startFight(Player& player, Room& currentRoom, const std::stri
 void BattleSystem::poisonEffect(Player& player, int& poisonTurn)
 {
     player.hp -= 4;
-    std::cout << "æ¯’ç´ ä¾µèš€ï¼Œå—åˆ°4ç‚¹æ¯’ç´ ä¼¤å®³ï¼å‰©ä½™æ¯’ç´ å›åˆï¼š" << poisonTurn << std::endl;
+    std::cout << "¶¾ËØÇÖÊ´£¬ÊÜµ½4µã¶¾ËØÉËº¦£¡Ê£Óà¶¾ËØ»ØºÏ£º" << poisonTurn << std::endl;
     poisonTurn--;
     if (player.hp < 0) player.hp = 0;
 }
@@ -96,12 +96,12 @@ void BattleSystem::monsterDrop(Player& player, std::unique_ptr<Monster>& deadMon
 {
     int goldGet = deadMonster->rewardGold;
     player.gold += goldGet;
-    std::cout << "è·å¾—é‡‘å¸ï¼š" << goldGet << std::endl;
+    std::cout << "»ñµÃ½ğ±Ò£º" << goldGet << std::endl;
 
     for (auto& dropItem : deadMonster->dropItems)
     {
-        std::cout << "æ‰è½ç‰©å“ï¼š" << dropItem->name << std::endl;
-        if (dropItem->type == "å®çŸ³")
+        std::cout << "µôÂäÎïÆ·£º" << dropItem->name << std::endl;
+        if (dropItem->type == "±¦Ê¯")
         {
             ChestStory::collectGem(player, dropItem->name);
         }
