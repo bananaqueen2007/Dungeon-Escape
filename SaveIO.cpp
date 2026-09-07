@@ -50,7 +50,7 @@ bool SaveIO::saveToFile(const Player& player, const std::vector<std::shared_ptr<
     }
 
     outFile.close();
-    std::cout << "?存档成功，已写入save.txt" << std::endl;
+    std::cout << "存档成功，已写入save.txt" << std::endl;
     return true;
 }
 
@@ -59,7 +59,7 @@ bool SaveIO::loadFromFile(Player& player, std::vector<std::shared_ptr<Room>>& ro
     std::ifstream inFile("save.txt");
     if (!inFile.is_open())
     {
-        std::cout << "?读档失败，未找到save.txt存档文件！" << std::endl;
+        std::cout << "读档失败，未找到save.txt存档文件！" << std::endl;
         return false;
     }
     inFile >> player.name;
@@ -138,6 +138,6 @@ bool SaveIO::loadFromFile(Player& player, std::vector<std::shared_ptr<Room>>& ro
     }
 
     inFile.close();
-    std::cout << "?读档成功！欢迎回来，" << player.name << std::endl;
+    std::cout << "读档成功！欢迎回来，" << player.name << std::endl;
     return true;
 }

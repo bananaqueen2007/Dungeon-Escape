@@ -50,11 +50,11 @@ void ChestStory::openRoomChest(Player& player, Room& curRoom)
         if (rand() % 2 == 0)
         {
             player.gold += bet;
-            std::cout << "??翻倍！获得" << bet << "金币！";
+            std::cout << "翻倍！获得" << bet << "金币！";
         }
         else {
             player.gold -= bet;
-            std::cout << "??金币全部清零！";
+            std::cout << "金币全部清零！";
         }
     }
     break;
@@ -62,11 +62,11 @@ void ChestStory::openRoomChest(Player& player, Room& curRoom)
         if (player.totalAtk >= 50)
         {
             player.gold += 500;
-            std::cout << "?攻击力足够，拿到500金币！";
+            std::cout << "攻击力足够，拿到500金币！";
         }
         else {
             player.hp -= 20;
-            std::cout << "?攻击力不足，损失20生命！";
+            std::cout << "攻击力不足，损失20生命！";
         }
         break;
     case 5://黑暗水牢吸血宝箱

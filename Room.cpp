@@ -132,7 +132,7 @@ bool moveToRoom(int targetId, Player& player, std::vector<std::shared_ptr<Room>>
         //规则：本房间还有存活怪物，禁止离开房间！文档要求kill是必要行动
         if (roomHasAliveMonster(cur))
         {
-            std::cout << "\n??本房间还有活着的怪物，必须击杀怪物才可以离开房间！\n";
+            std::cout << "\n本房间还有活着的怪物，必须击杀怪物才可以离开房间！\n";
             return false;
         }
     }
@@ -150,11 +150,11 @@ bool moveToRoom(int targetId, Player& player, std::vector<std::shared_ptr<Room>>
         if (targetRoom->id == 2 && player.hasBoneKey)
         {
             targetRoom->locked = false;
-            std::cout << "?使用钥匙打开骸骨密室大门！\n";
+            std::cout << "使用钥匙打开骸骨密室大门！\n";
         }
         else
         {
-            std::cout << "?该房间已上锁，神秘的东西在门后等着你，你有种不祥的预感\n";
+            std::cout << "该房间已上锁，神秘的东西在门后等着你，你有种不祥的预感\n";
             return false;
         }
     }
@@ -183,10 +183,10 @@ bool moveToRoom(int targetId, Player& player, std::vector<std::shared_ptr<Room>>
             bat->dropItems.emplace_back(std::make_shared<Item>("夜明砂", "卖钱", "杂物", 0));
             targetRoom->monsters.push_back(std::move(bat));
         }
-        std::cout << "??回到幽暗回廊，蝙蝠重新刷新了！\n";
+        std::cout << "回到幽暗回廊，蝙蝠重新刷新了！\n";
     }
 
     player.currentRoomId = targetId;
-    std::cout << "??你来到：" << targetRoom->name << "。" << targetRoom->description << "\n";
+    std::cout << "你来到：" << targetRoom->name << "。" << targetRoom->description << "\n";
     return true;
 }
