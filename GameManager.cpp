@@ -3,7 +3,7 @@
 #include <sstream>
 #include <windows.h>
 
-//æ§åˆ¶å°é¢œè‰²å®
+//¿ØÖÆÌ¨ÑÕÉ«ºê
 #define RED  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),12)
 #define GREEN SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),10)
 #define YELLOW SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),14)
@@ -15,7 +15,7 @@ int GameManager::safeStringToInt(const std::string& s)
     {
         return std::stoi(s);
     }
-    catch (...)
+    catch(...)
     {
         return -9999;
     }
@@ -24,25 +24,25 @@ int GameManager::safeStringToInt(const std::string& s)
 void GameManager::printHelpText()
 {
     GREEN;
-    std::cout << "\n====å¯ç”¨æŒ‡ä»¤åˆ—è¡¨====" << std::endl;
-    std::cout << "map      : æŸ¥çœ‹åœ°ç‰¢åœ°å›¾ï¼Œè¾“å…¥æ•°å­—åˆ‡æ¢æˆ¿é—´" << std::endl;
-    std::cout << "inv      : æ‰“å¼€èƒŒåŒ…é¢æ¿" << std::endl;
-    std::cout << "look     : æŸ¥çœ‹å½“å‰æˆ¿é—´ä¿¡æ¯" << std::endl;
-    std::cout << "get ç‰©å“å: æ‹¾å–åœ°é¢ç‰©å“" << std::endl;
-    std::cout << "drop ç‰©å“å:ä¸¢å¼ƒç‰©å“åˆ°åœ°é¢" << std::endl;
-    std::cout << "use ç‰©å“å: ä½¿ç”¨èƒŒåŒ…æ¶ˆè€—å“" << std::endl;
-    std::cout << "equip ç‰©å“å :ç©¿æˆ´æ­¦å™¨/æŠ«é£" << std::endl;
-    std::cout << "unequip æ­¦å™¨/æŠ«é£ :å¸ä¸‹è£…å¤‡æ”¾å›èƒŒåŒ…" << std::endl;
-    std::cout << "kill æ€ªç‰©å :æ”»å‡»æˆ¿é—´æ€ªç‰©" << std::endl;
-    std::cout << "talk NPCåå­— :å’ŒNPCå¯¹è¯" << std::endl;
-    std::cout << "shop     : æ‰“å¼€å•†äººå•†åº—" << std::endl;
-    std::cout << "buy ç‰©å“å :è´­ä¹°å•†å“" << std::endl;
-    std::cout << "sell ç‰©å“å :å–å‡ºèƒŒåŒ…ç‰©å“" << std::endl;
-    std::cout << "chest :æ‰“å¼€å½“å‰æˆ¿é—´å®ç®±" << std::endl;
-    std::cout << "skin     : æŸ¥çœ‹å·²æ”¶é›†æŠ«é£å¤–è§‚" << std::endl;
-    std::cout << "save     : æ‰‹åŠ¨å­˜æ¡£" << std::endl;
-    std::cout << "quit     : ä¿å­˜å¹¶é€€å‡ºæ¸¸æˆ" << std::endl;
-    std::cout << "help     : å†æ¬¡æ˜¾ç¤ºæŒ‡ä»¤å¸®åŠ©\n" << std::endl;
+    std::cout << "\n====¿ÉÓÃÖ¸ÁîÁĞ±í====" << std::endl;
+    std::cout << "map      : ²é¿´µØÀÎµØÍ¼£¬ÊäÈëÊı×ÖÇĞ»»·¿¼ä" << std::endl;
+    std::cout << "inv      : ´ò¿ª±³°üÃæ°å" << std::endl;
+    std::cout << "look     : ²é¿´µ±Ç°·¿¼äĞÅÏ¢" << std::endl;
+    std::cout << "get ÎïÆ·Ãû: Ê°È¡µØÃæÎïÆ·" << std::endl;
+    std::cout << "drop ÎïÆ·Ãû:¶ªÆúÎïÆ·µ½µØÃæ" << std::endl;
+    std::cout << "use ÎïÆ·Ãû: Ê¹ÓÃ±³°üÏûºÄÆ·" << std::endl;
+    std::cout << "equip ÎïÆ·Ãû :´©´÷ÎäÆ÷/Åû·ç" << std::endl;
+    std::cout << "unequip ÎäÆ÷/Åû·ç :Ğ¶ÏÂ×°±¸·Å»Ø±³°ü" << std::endl;
+    std::cout << "kill ¹ÖÎïÃû :¹¥»÷·¿¼ä¹ÖÎï" << std::endl;
+    std::cout << "talk NPCÃû×Ö :ºÍNPC¶Ô»°" << std::endl;
+    std::cout << "shop     : ´ò¿ªÉÌÈËÉÌµê" << std::endl;
+    std::cout << "buy ÎïÆ·Ãû :¹ºÂòÉÌÆ·" << std::endl;
+    std::cout << "sell ÎïÆ·Ãû :Âô³ö±³°üÎïÆ·" << std::endl;
+    std::cout << "chest :´ò¿ªµ±Ç°·¿¼ä±¦Ïä" << std::endl;
+    std::cout << "skin     : ²é¿´ÒÑÊÕ¼¯Åû·çÍâ¹Û" << std::endl;
+    std::cout << "save     : ÊÖ¶¯´æµµ" << std::endl;
+    std::cout << "quit     : ±£´æ²¢ÍË³öÓÎÏ·" << std::endl;
+    std::cout << "help     : ÔÙ´ÎÏÔÊ¾Ö¸Áî°ïÖú\n" << std::endl;
     WHITE;
 }
 
@@ -52,26 +52,26 @@ void GameManager::showMainMenu()
     while (true)
     {
         YELLOW;
-        std::cout << "\n========åœ°ç‰¢é€ƒäº¡========" << std::endl;
-        std::cout << "1. æ–°å»ºæ¸¸æˆ" << std::endl;
-        std::cout << "2. ç»§ç»­æ¸¸æˆï¼ˆè¯»å–å­˜æ¡£ï¼‰" << std::endl;
-        std::cout << "è¯·è¾“å…¥é€‰æ‹©ï¼š";
+        std::cout << "\n========µØÀÎÌÓÍö========" << std::endl;
+        std::cout << "1. ĞÂ½¨ÓÎÏ·" << std::endl;
+        std::cout << "2. ¼ÌĞøÓÎÏ·£¨¶ÁÈ¡´æµµ£©" << std::endl;
+        std::cout << "ÇëÊäÈëÑ¡Ôñ£º";
         WHITE;
         std::string buf;
-        std::getline(std::cin, buf);
+        std::getline(std::cin,buf);
         int select = safeStringToInt(buf);
 
         if (select == 1)
         {
             std::string playerName;
-            std::cout << "è¯·è¾“å…¥å†’é™©è€…åå­—ï¼š";
+            std::cout << "ÇëÊäÈëÃ°ÏÕÕßÃû×Ö£º";
             std::getline(std::cin, playerName);
             m_player = std::make_unique<Player>(playerName);
             ChestStory::gemList.clear();
             initRooms();
-            //åˆå§‹è¿›å…¥å¹½æš—å›å»Šæç¤º
+            //³õÊ¼½øÈëÓÄ°µ»ØÀÈÌáÊ¾
             GREEN;
-            std::cout << "\nä½ è‹é†’è¿‡æ¥ï¼Œå‘ç°è‡ªå·±èº«å¤„å¹½æš—å›å»Šï¼åœ°ç‰¢å†’é™©æ­£å¼å¼€å§‹ï¼\n";
+            std::cout << "\nÄãËÕĞÑ¹ıÀ´£¬·¢ÏÖ×Ô¼ºÉí´¦ÓÄ°µ»ØÀÈ£¡µØÀÎÃ°ÏÕÕıÊ½¿ªÊ¼£¡\n";
             WHITE;
             gameLoop();
             break;
@@ -89,7 +89,7 @@ void GameManager::showMainMenu()
         else
         {
             RED;
-            std::cout << "è¾“å…¥æ— æ•ˆï¼Œè¯·è¾“å…¥1æˆ–è€…2ï¼" << std::endl;
+            std::cout << "ÊäÈëÎŞĞ§£¬ÇëÊäÈë1»òÕß2£¡" << std::endl;
             WHITE;
         }
     }
@@ -99,7 +99,7 @@ void GameManager::initRooms()
 {
     initAllRooms(m_roomList);
     GREEN;
-    std::cout << "åœ°ç‰¢æˆ¿é—´èµ„æºåŠ è½½å®Œæˆ..." << std::endl;
+    std::cout << "µØÀÎ·¿¼ä×ÊÔ´¼ÓÔØÍê³É..." << std::endl;
     WHITE;
 }
 
@@ -107,7 +107,7 @@ void GameManager::gameLoop()
 {
     std::string input;
     GREEN;
-    std::cout << "\n====å†’é™©å¼€å§‹ï¼è¾“å…¥æŒ‡ä»¤è¿›è¡Œæ“ä½œï¼Œquité€€å‡ºæ¸¸æˆ====" << std::endl;
+    std::cout << "\n====Ã°ÏÕ¿ªÊ¼£¡ÊäÈëÖ¸Áî½øĞĞ²Ù×÷£¬quitÍË³öÓÎÏ·====" << std::endl;
     WHITE;
     printHelpText();
     while (true)
@@ -120,7 +120,7 @@ void GameManager::gameLoop()
         if (m_player->hp <= 0)
         {
             RED;
-            std::cout << "æ¸¸æˆç»“æŸï¼" << std::endl;
+            std::cout << "ÓÎÏ·½áÊø£¡" << std::endl;
             WHITE;
             break;
         }
@@ -144,7 +144,7 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     {
         m_player->equipItem(cmdRes.arg);
     }
-    else if (cmdRes.cmd == "unequip")
+    else if(cmdRes.cmd == "unequip")
     {
         m_player->unequipItem(cmdRes.arg);
     }
@@ -168,7 +168,7 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
                 break;
             }
         }
-        if (!found) std::cout << "åœ°é¢æ²¡æœ‰è¿™ä¸ªç‰©å“ï¼\n";
+        if (!found) std::cout << "µØÃæÃ»ÓĞÕâ¸öÎïÆ·£¡\n";
     }
     else if (cmdRes.cmd == "drop")
     {
@@ -182,15 +182,15 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     else if (cmdRes.cmd == "kill")
     {
         int battleRet = BattleSystem::startFight(*m_player, curRoom, cmdRes.arg);
-        //battleRet = 1å‡»æ€æˆåŠŸï¼›0æ­»äº¡ï¼›2æ–—ç¯·é€ƒè·‘ï¼ˆæ€ªç‰©å­˜æ´»ï¼‰
-        if (battleRet == 1 && curRoom.id == 8)
+        //battleRet = 1»÷É±³É¹¦£»0ËÀÍö£»2¶·ÅñÌÓÅÜ£¨¹ÖÎï´æ»î£©
+        if(battleRet == 1 && curRoom.id ==8)
         {
             ChestStory::checkWinCondition(*m_player);
         }
     }
     else if (cmdRes.cmd == "talk")
     {
-        ShopNpcLogic::npcTalk(curRoom, *m_player, cmdRes.arg);
+        ShopNpcLogic::npcTalk(curRoom, *m_player,cmdRes.arg);
     }
     else if (cmdRes.cmd == "shop")
     {
@@ -210,32 +210,32 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     }
     else if (cmdRes.cmd == "quit")
     {
-        std::cout << "æ‰§è¡Œè‡ªåŠ¨å­˜æ¡£ï¼Œé€€å‡ºæ¸¸æˆã€‚" << std::endl;
+        std::cout << "Ö´ĞĞ×Ô¶¯´æµµ£¬ÍË³öÓÎÏ·¡£" << std::endl;
         SaveIO::saveToFile(*m_player, m_roomList);
         exit(0);
     }
     else if (cmdRes.cmd == "look")
     {
         YELLOW;
-        std::cout << "\nã€" << curRoom.name << "ã€‘" << curRoom.description << "\n";
+        std::cout << "\n¡¾" << curRoom.name << "¡¿" << curRoom.description << "\n";
         WHITE;
-        if (curRoom.hasChest && !curRoom.chestOpened)
+        if(curRoom.hasChest && !curRoom.chestOpened)
         {
             GREEN;
-            std::cout << "â˜…æœ¬æˆ¿é—´å­˜åœ¨æœªå¼€å¯çš„å®ç®±ï¼\n";
+            std::cout << "¡ï±¾·¿¼ä´æÔÚÎ´¿ªÆôµÄ±¦Ïä£¡\n";
             WHITE;
         }
-        std::cout << "----åœ°é¢ç‰©å“----\n";
-        if (curRoom.groundItems.empty()) std::cout << "æ— \n";
+        std::cout << "----µØÃæÎïÆ·----\n";
+        if (curRoom.groundItems.empty()) std::cout << "ÎŞ\n";
         else for (auto& i : curRoom.groundItems) std::cout << "- " << i->name << "\n";
-        std::cout << "----å­˜æ´»æ€ªç‰©----\n";
+        std::cout << "----´æ»î¹ÖÎï----\n";
         bool hasMonster = false;
         for (auto& m : curRoom.monsters) { if (m->hp > 0) { std::cout << "- " << m->name << " hp:" << m->hp << "\n"; hasMonster = true; } }
-        if (!hasMonster) std::cout << "æœ¬æˆ¿é—´æ€ªç‰©å·²å…¨éƒ¨æ¸…é™¤\n";
-        std::cout << "----åœ¨åœºNPC----\n";
-        if (curRoom.npcs.empty())
+        if (!hasMonster) std::cout << "±¾·¿¼ä¹ÖÎïÒÑÈ«²¿Çå³ı\n";
+        std::cout << "----ÔÚ³¡NPC----\n";
+        if(curRoom.npcs.empty())
         {
-            std::cout << "æ— NPC\n";
+            std::cout << "ÎŞNPC\n";
         }
         else
         {
@@ -244,22 +244,22 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     }
     else if (cmdRes.cmd == "map")
     {
-        std::cout << "\n====åœ°ç‰¢æˆ¿é—´åˆ—è¡¨====" << std::endl;
+        std::cout << "\n====µØÀÎ·¿¼äÁĞ±í====" << std::endl;
         for (auto& r : m_roomList)
         {
             std::cout << r->id << "-" << r->name;
-            if (r->locked) std::cout << "ã€ä¸Šé”ã€‘";
-            if (r->giveKey) std::cout << "ã€å¯è·å–é’¥åŒ™ã€‘";
+            if (r->locked) std::cout << "¡¾ÉÏËø¡¿";
+            if (r->giveKey) std::cout << "¡¾¿É»ñÈ¡Ô¿³×¡¿";
             std::cout << "\n";
         }
-        std::cout << "è¯·è¾“å…¥è¦å‰å¾€çš„æˆ¿é—´æ•°å­—ï¼š";
+        std::cout << "ÇëÊäÈëÒªÇ°ÍùµÄ·¿¼äÊı×Ö£º";
         std::string numStr;
         std::getline(std::cin, numStr);
         int targetId = safeStringToInt(numStr);
-        if (targetId == -9999)
+        if(targetId == -9999)
         {
             RED;
-            std::cout << "æœªçŸ¥è¾“å…¥ï¼Œè¯·é‡è¯•\n";
+            std::cout << "Î´ÖªÊäÈë£¬ÇëÖØÊÔ\n";
             WHITE;
             return;
         }
@@ -272,7 +272,7 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     else
     {
         RED;
-        std::cout << "æœªçŸ¥æŒ‡ä»¤ï¼Œè¯·é‡æ–°è¾“å…¥ï¼" << std::endl;
+        std::cout << "Î´ÖªÖ¸Áî£¬ÇëÖØĞÂÊäÈë£¡" << std::endl;
         WHITE;
     }
 }
@@ -282,7 +282,7 @@ void GameManager::checkGameStatus()
     if (m_player->hp <= 0)
     {
         RED;
-        std::cout << "\nä½ çš„ç”Ÿå‘½å€¼å½’é›¶ï¼Œä½ å€’åœ¨äº†åœ°ç‰¢ä¹‹ä¸­ï¼Œæ¸¸æˆå¤±è´¥ï¼" << std::endl;
+        std::cout << "\nÄãµÄÉúÃüÖµ¹éÁã£¬Äãµ¹ÔÚÁËµØÀÎÖ®ÖĞ£¬ÓÎÏ·Ê§°Ü£¡" << std::endl;
         WHITE;
     }
 }
