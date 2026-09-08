@@ -1,5 +1,6 @@
 #ifndef MONSTER_H
 #define MONSTER_H
+
 #include <string>
 #include <memory>
 #include <vector>

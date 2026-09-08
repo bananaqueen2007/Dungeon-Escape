@@ -1,5 +1,6 @@
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
+
 #include "Player.h"
 #include "Room.h"
 #include "CommandParser.h"
@@ -22,6 +23,7 @@ private:
     void handleCommand(const CommandResult& cmdRes);
     void checkGameStatus();
     void printHelpText();
+    int safeStringToInt(const std::string& s);
 };
 
 #endif

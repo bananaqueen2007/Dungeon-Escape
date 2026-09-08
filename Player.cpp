@@ -41,7 +41,7 @@ void Player::takeDamage(int damage)
     std::cout << name << " 受到 " << realDmg << " 点伤害！剩余血量：" << hp << std::endl;
 }
 
-bool Player::pickUpItem(std::shared_ptr<Item> item)
+bool Player::pickUpItem(std::shared_ptr<Item> item, bool isBuy)
 {
     if (isBackpackFull())
     {
@@ -53,11 +53,18 @@ bool Player::pickUpItem(std::shared_ptr<Item> item)
         if (p->name == item->name)
         {
             p->stackCount += item->stackCount;
+            if (!isBuy)
+                std::cout << "拾取到了：" << item->name << std::endl;
+            else
+                std::cout << "购买成功：" << item->name << std::endl;
             return true;
         }
     }
     backpack.push_back(item);
-    std::cout << "拾取成功：" << item->name << std::endl;
+    if (!isBuy)
+        std::cout << "拾取到了：" << item->name << std::endl;
+    else
+        std::cout << "购买成功：" << item->name << std::endl;
     return true;
 }
 
@@ -68,15 +75,16 @@ std::shared_ptr<Item> Player::dropItem(const std::string& itemName)
         if (backpack[i]->name == itemName)
         {
             auto res = backpack[i];
+            //如果是正在装备的，卸下
             if (equipWeapon != nullptr && equipWeapon->name == itemName)
             {
-                equipWeapon.reset();
+                equipWeapon = nullptr;
                 calcTotalAttack();
                 std::cout << "卸下已装备武器！" << std::endl;
             }
             if (equipCloak != nullptr && equipCloak->name == itemName)
             {
-                equipCloak.reset();
+                equipCloak = nullptr;
                 std::cout << "卸下已装备披风！" << std::endl;
             }
             backpack.erase(backpack.begin() + i);
@@ -84,6 +92,23 @@ std::shared_ptr<Item> Player::dropItem(const std::string& itemName)
             return res;
         }
     }
+    //判断是不是身上正装备，背包没有
+    if (equipWeapon && equipWeapon->name == itemName)
+    {
+        auto res = equipWeapon;
+        equipWeapon = nullptr;
+        calcTotalAttack();
+        std::cout << "卸下已装备武器，丢弃！" << std::endl;
+        return res;
+    }
+    if (equipCloak && equipCloak->name == itemName)
+    {
+        auto res = equipCloak;
+        equipCloak = nullptr;
+        std::cout << "卸下已装备披风，丢弃！" << std::endl;
+        return res;
+    }
+
     std::cout << "背包找不到该物品！" << std::endl;
     return nullptr;
 }
@@ -96,15 +121,43 @@ bool Player::equipItem(const std::string& itemName)
         {
             if (it->type == "武器")
             {
-                equipWeapon.reset(it.get());
+                //旧武器放回背包
+                if (equipWeapon != nullptr)
+                {
+                    backpack.push_back(equipWeapon);
+                    std::cout << "旧武器放回背包\n";
+                }
+                equipWeapon = it;
+                //从背包移除
+                for (auto iter = backpack.begin(); iter != backpack.end(); ++iter)
+                {
+                    if (*iter == it)
+                    {
+                        backpack.erase(iter);
+                        break;
+                    }
+                }
                 calcTotalAttack();
                 std::cout << "装备武器成功！总攻击力：" << totalAtk << std::endl;
                 return true;
             }
             else if (it->type == "外观披风")
             {
-                equipCloak.reset(it.get());
+                if (equipCloak != nullptr)
+                {
+                    backpack.push_back(equipCloak);
+                    std::cout << "旧披风放回背包\n";
+                }
+                equipCloak = it;
                 skinList.push_back(it);
+                for (auto iter = backpack.begin(); iter != backpack.end(); ++iter)
+                {
+                    if (*iter == it)
+                    {
+                        backpack.erase(iter);
+                        break;
+                    }
+                }
                 std::cout << "穿戴披风成功！" << std::endl;
                 return true;
             }
@@ -117,6 +170,50 @@ bool Player::equipItem(const std::string& itemName)
     }
     std::cout << "背包没有这个物品！" << std::endl;
     return false;
+}
+
+bool Player::unequipItem(const std::string& type)
+{
+    if (type == "weapon" || type == "武器")
+    {
+        if (!equipWeapon)
+        {
+            std::cout << "当前没有装备武器\n";
+            return false;
+        }
+        if (isBackpackFull())
+        {
+            std::cout << "背包已满，无法卸下！\n";
+            return false;
+        }
+        backpack.push_back(equipWeapon);
+        std::cout << "卸下武器：" << equipWeapon->name << "放回背包\n";
+        equipWeapon = nullptr;
+        calcTotalAttack();
+        return true;
+    }
+    else if (type == "cloak" || type == "披风")
+    {
+        if (!equipCloak)
+        {
+            std::cout << "当前没有装备披风\n";
+            return false;
+        }
+        if (isBackpackFull())
+        {
+            std::cout << "背包已满，无法卸下！\n";
+            return false;
+        }
+        backpack.push_back(equipCloak);
+        std::cout << "卸下披风：" << equipCloak->name << "放回背包\n";
+        equipCloak = nullptr;
+        return true;
+    }
+    else
+    {
+        std::cout << "unequip 参数：武器 / 披风\n";
+        return false;
+    }
 }
 
 bool Player::useItem(const std::string& itemName)
@@ -145,7 +242,7 @@ void Player::showInventory()
     std::cout << "\n===== 角色背包面板 =====" << std::endl;
     std::cout << "姓名:" << name << " 血量:" << hp << "/" << maxHp << std::endl;
     std::cout << "基础攻击:" << baseAtk << "总攻击:" << totalAtk << "金币:" << gold << std::endl;
-    std::cout << "宝石收集数量:" << ChestStory::gemList.size() << "/8 ";
+    std::cout << "宝石收集数量:" << ChestStory::gemList.size() << "/6 ";
     if (hasBoneKey) std::cout << "【持有骸骨密室钥匙】";
     std::cout << std::endl;
 

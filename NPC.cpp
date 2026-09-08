@@ -1,7 +1,9 @@
 #include "Npc.h"
 #include <iostream>
 
-Npc::Npc(std::string n, std::string t) :name(n), talkText(t) {}
+Npc::Npc(std::string n, std::string t)
+    :name(n), talkText(t), triggeredOnce(false) {
+}
 
 void Npc::talk()
 {
