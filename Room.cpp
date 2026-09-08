@@ -22,97 +22,97 @@ bool roomHasAliveMonster(Room& curRoom)
 void initAllRooms(std::vector<std::shared_ptr<Room>>& roomList)
 {
     roomList.clear();
-    //1 å¹½æš—å›å»Šï¼Œåˆ é™¤åœ°é¢çƒ¤é¸¡ï¼ŒhasChest=true
-    auto r1 = std::make_shared<Room>(1, "å¹½æš—å›å»Š", "é•¿é•¿çš„å¹½æš—å›å»Šï¼Œåœ°ç‰¢çš„ä¸­å¿ƒæ¢çº½ã€‚è™è åœ¨é¡¶éƒ¨ç›˜æ—‹ã€‚", false, false, true);
+    //1 ÓÄ°µ»ØÀÈ£¬É¾³ıµØÃæ¿¾¼¦£¬hasChest=true
+    auto r1 = std::make_shared<Room>(1, "ÓÄ°µ»ØÀÈ", "³¤³¤µÄÓÄ°µ»ØÀÈ£¬µØÀÎµÄÖĞĞÄÊàÅ¦¡£òùòğÔÚ¶¥²¿ÅÌĞı¡£", false, false,true);
     for (int i = 0; i < 5; i++)
     {
-        auto bat = std::make_unique<Monster>("å°è™è ", 15, 3, 10);
-        bat->dropItems.emplace_back(std::make_shared<Item>("è™è çš„ç¿…è†€", "å¯ä»¥å–é’±", "æ‚ç‰©", 0));
-        bat->dropItems.emplace_back(std::make_shared<Item>("å¤œæ˜ç ‚", "å¯ä»¥å–é’±", "æ‚ç‰©", 0));
+        auto bat = std::make_unique<Monster>("Ğ¡òùòğ", 15, 3, 10);
+        bat->dropItems.emplace_back(std::make_shared<Item>("òùòğµÄ³á°ò", "¿ÉÒÔÂôÇ®", "ÔÓÎï", 0));
+        bat->dropItems.emplace_back(std::make_shared<Item>("Ò¹Ã÷É°", "¿ÉÒÔÂôÇ®", "ÔÓÎï", 0));
         r1->monsters.push_back(std::move(bat));
     }
     roomList.push_back(r1);
 
-    //2 éª¸éª¨å¯†å®¤ã€ä¸Šé”ã€‘
-    auto r2 = std::make_shared<Room>(2, "éª¸éª¨å¯†å®¤", "æ»¡åœ°éª¸éª¨ï¼Œé˜´æ£®çš„å¯†å®¤ã€‚å·¨å¤§éª¸éª¨å®ˆå«ä¼«ç«‹åœ¨æ­¤ã€‚", true, false, true);
-    auto boneGuard = std::make_unique<Monster>("éª¸éª¨å®ˆå«", 100, 40, 100);
-    boneGuard->dropItems.emplace_back(std::make_shared<Item>("ç´«å®çŸ³", "æ”»å‡»+20ï¼Œé€šå…³å®çŸ³", "å®çŸ³", 20));
+    //2 º¡¹ÇÃÜÊÒ¡¾ÉÏËø¡¿
+    auto r2 = std::make_shared<Room>(2, "º¡¹ÇÃÜÊÒ", "ÂúµØº¡¹Ç£¬ÒõÉ­µÄÃÜÊÒ¡£¾Ş´óº¡¹ÇÊØÎÀØùÁ¢ÔÚ´Ë¡£", true, false,true);
+    auto boneGuard = std::make_unique<Monster>("º¡¹ÇÊØÎÀ", 100, 40, 100);
+    boneGuard->dropItems.emplace_back(std::make_shared<Item>("×Ï±¦Ê¯", "¹¥»÷+20£¬Í¨¹Ø±¦Ê¯", "±¦Ê¯", 20));
     r2->monsters.push_back(std::move(boneGuard));
     roomList.push_back(r2);
 
-    //3 è´¸æ˜“çŸ³å®¤ã€å•†äºº+æµæµªå›šå¾’NPCã€‘
-    auto r3 = std::make_shared<Room>(3, "è´¸æ˜“çŸ³å®¤", "å•†äººåœ¨æ­¤å¤„åœç•™ï¼Œå¯ä»¥äº¤æ˜“ç‰©èµ„ã€‚å›šå¾’èœ·ç¼©å¢™è§’ã€‚", false, false, true);
-    auto prisoner = std::make_unique<Npc>("æµæµªå›šå¾’", "åˆè¿›æ¥äº†ä¸€ä¸ªå†’é™©è€…ï¼ˆå–ƒå–ƒè‡ªè¯­ï¼‰ï¼Œå°æ¯›å¤´ï¼Œæˆ‘æƒ³æˆ‘å¿…é¡»æé†’ä½ ï¼Œæœ€åçš„å¼€é—¨çš„ç§˜å¯†å­˜åœ¨äºå…­ä¸ªæˆ¿é—´é‡Œï¼Œä¸è¦å› ä¸ºè‡ªå¤§é—æ¼ä»»ä½•ä¸€ä¸ªâ€¦â€¦");
+    //3 Ã³Ò×Ê¯ÊÒ¡¾ÉÌÈË+Á÷ÀËÇôÍ½NPC¡¿
+    auto r3 = std::make_shared<Room>(3, "Ã³Ò×Ê¯ÊÒ", "ÉÌÈËÔÚ´Ë´¦Í£Áô£¬¿ÉÒÔ½»Ò×Îï×Ê¡£ÇôÍ½òéËõÇ½½Ç¡£", false, false,true);
+    auto prisoner = std::make_unique<Npc>("Á÷ÀËÇôÍ½", "ÓÖ½øÀ´ÁËÒ»¸öÃ°ÏÕÕß£¨à«à«×ÔÓï£©£¬Ğ¡Ã«Í·£¬ÎÒÏëÎÒ±ØĞëÌáĞÑÄã£¬×îºóµÄ¿ªÃÅµÄÃØÃÜ´æÔÚÓÚÁù¸ö·¿¼äÀï£¬²»ÒªÒòÎª×Ô´óÒÅÂ©ÈÎºÎÒ»¸ö¡­¡­");
     r3->npcs.push_back(std::move(prisoner));
-    auto merchant = std::make_unique<Merchant>("é»‘å¸‚å•†äºº", "æ¬¢è¿å…‰ä¸´ï¼Œå†’é™©è€…ï¼çœ‹çœ‹æˆ‘çš„å•†å“å§ã€‚");
-    merchant->shopGoods.push_back({ std::make_shared<Item>("è§£æ¯’è¯å‰‚","é˜²å¾¡èœ˜è››æ¯’ç´ ","æ¶ˆè€—å“",0),300 });
-    merchant->shopGoods.push_back({ std::make_shared<Item>("å¹¸è¿è¯æ°´","æœ€å¤§ç”Ÿå‘½+20","æ¶ˆè€—å“",0),200 });
-    merchant->shopGoods.push_back({ std::make_shared<Item>("ç”Ÿå‘½è¯æ°´","å›æ»¡è¡€é‡","æ¶ˆè€—å“",0),100 });
-    merchant->shopGoods.push_back({ std::make_shared<Item>("é¸¡è¡€","æ”»å‡»+50æŒç»­ä¸¤å›åˆ","æ¶ˆè€—å“",0),150 });
-    merchant->shopGoods.push_back({ std::make_shared<Item>("é˜²å¾¡è¯æ°´","å…ä¼¤50%","æ¶ˆè€—å“",0),500 });
-    merchant->shopGoods.push_back({ std::make_shared<Item>("å¥½åˆ€","æ”»å‡»+10","æ­¦å™¨",10),200 });
-    merchant->shopGoods.push_back({ std::make_shared<Item>("éå¸¸å¥½çš„åˆ€","æ”»å‡»+20","æ­¦å™¨",20),400 });
-    merchant->shopGoods.push_back({ std::make_shared<Item>("æ— æ•Œè‡³å°Šå®åˆ€","æ”»å‡»+35","æ­¦å™¨",35),600 });
-    //========æ›´æ–°æš—å½±æ–—ç¯·æè¿°========
-    merchant->shopGoods.push_back({ std::make_shared<Item>("æš—å½±æ–—ç¯·","è£…å¤‡åï¼Œå¯¹é˜µè¡€é‡ä½äºè‡ªèº«æ€»æ”»å‡»çš„å°æ€ªå¯é€‰æ‹©éšåŒ¿è·³è¿‡æˆ˜æ–—ï¼Œè·³è¿‡æ— æˆ˜åˆ©å“ï¼›æ— æ³•è·³è¿‡å¼ºæ•Œä¸BOSS","å¤–è§‚æŠ«é£",0),800 });
+    auto merchant = std::make_unique<Merchant>("ºÚÊĞÉÌÈË", "»¶Ó­¹âÁÙ£¬Ã°ÏÕÕß£¡¿´¿´ÎÒµÄÉÌÆ·°É¡£");
+    merchant->shopGoods.push_back({ std::make_shared<Item>("½â¶¾Ò©¼Á","·ÀÓùÖ©Öë¶¾ËØ","ÏûºÄÆ·",0),300 });
+    merchant->shopGoods.push_back({ std::make_shared<Item>("ĞÒÔËÒ©Ë®","×î´óÉúÃü+20","ÏûºÄÆ·",0),200 });
+    merchant->shopGoods.push_back({ std::make_shared<Item>("ÉúÃüÒ©Ë®","»ØÂúÑªÁ¿","ÏûºÄÆ·",0),100 });
+    merchant->shopGoods.push_back({ std::make_shared<Item>("¼¦Ñª","¹¥»÷+50³ÖĞøÁ½»ØºÏ","ÏûºÄÆ·",0),150 });
+    merchant->shopGoods.push_back({ std::make_shared<Item>("·ÀÓùÒ©Ë®","ÃâÉË50%","ÏûºÄÆ·",0),500 });
+    merchant->shopGoods.push_back({ std::make_shared<Item>("ºÃµ¶","¹¥»÷+10","ÎäÆ÷",10),200 });
+    merchant->shopGoods.push_back({ std::make_shared<Item>("·Ç³£ºÃµÄµ¶","¹¥»÷+20","ÎäÆ÷",20),400 });
+    merchant->shopGoods.push_back({ std::make_shared<Item>("ÎŞµĞÖÁ×ğ±¦µ¶","¹¥»÷+35","ÎäÆ÷",35),600 });
+    //========¸üĞÂ°µÓ°¶·ÅñÃèÊö========
+    merchant->shopGoods.push_back({ std::make_shared<Item>("°µÓ°¶·Åñ","×°±¸ºó£¬¶ÔÕóÑªÁ¿µÍÓÚ×ÔÉí×Ü¹¥»÷µÄĞ¡¹Ö¿ÉÑ¡ÔñÒşÄäÌø¹ıÕ½¶·£¬Ìø¹ıÎŞÕ½ÀûÆ·£»ÎŞ·¨Ìø¹ıÇ¿µĞÓëBOSS","Íâ¹ÛÅû·ç",0),800 });
     r3->npcs.push_back(std::move(merchant));
     roomList.push_back(r3);
 
-    //4 ç§¯æ°´çŸ³å®¤
-    auto r4 = std::make_shared<Room>(4, "ç§¯æ°´çŸ³å®¤", "åœ°é¢ç§¯æ»¡å†°å†·åœ°ä¸‹æ°´ï¼ŒèŸ¾èœåœ¨æ°´ä¸­å’•å’•ä½œå“ã€‚", false, false, true);
-    auto bigToad = std::make_unique<Monster>("å·¨å‹èŸ¾èœ", 60, 20, 70);
-    bigToad->dropItems.emplace_back(std::make_shared<Item>("çè´µçš„èŸ¾èœç²˜æ¶²", "å¯ä»¥å–é’±", "æ‚ç‰©", 0));
-    bigToad->dropItems.emplace_back(std::make_shared<Item>("é»„å®çŸ³", "æ”»å‡»+10ï¼Œé€šå…³å®çŸ³", "å®çŸ³", 10));
+    //4 »ıË®Ê¯ÊÒ
+    auto r4 = std::make_shared<Room>(4, "»ıË®Ê¯ÊÒ", "µØÃæ»ıÂú±ùÀäµØÏÂË®£¬ó¸òÜÔÚË®ÖĞ¹¾¹¾×÷Ïì¡£", false, false,true);
+    auto bigToad = std::make_unique<Monster>("¾ŞĞÍó¸òÜ", 60, 20, 70);
+    bigToad->dropItems.emplace_back(std::make_shared<Item>("Õä¹óµÄó¸òÜÕ³Òº", "¿ÉÒÔÂôÇ®", "ÔÓÎï", 0));
+    bigToad->dropItems.emplace_back(std::make_shared<Item>("»Æ±¦Ê¯", "¹¥»÷+10£¬Í¨¹Ø±¦Ê¯", "±¦Ê¯", 10));
     r4->monsters.push_back(std::move(bigToad));
     for (int i = 0; i < 3; i++)
     {
-        auto sToad = std::make_unique<Monster>("å°èŸ¾èœ", 40, 10, 35);
-        sToad->dropItems.emplace_back(std::make_shared<Item>("èŸ¾èœç²˜æ¶²", "å¯ä»¥å–é’±", "æ‚ç‰©", 0));
+        auto sToad = std::make_unique<Monster>("Ğ¡ó¸òÜ", 40, 10, 35);
+        sToad->dropItems.emplace_back(std::make_shared<Item>("ó¸òÜÕ³Òº", "¿ÉÒÔÂôÇ®", "ÔÓÎï", 0));
         r4->monsters.push_back(std::move(sToad));
     }
     roomList.push_back(r4);
 
-    //5 é»‘æš—æ°´ç‰¢
-    auto r5 = std::make_shared<Room>(5, "é»‘æš—æ°´ç‰¢", "æ›¾ç»å…³æŠ¼å›šçŠ¯çš„æ°´ç‰¢ï¼Œè…çƒ‚å°¸é¬¼æ¸¸è¡äºæ­¤ã€‚", false, false, true);
-    auto ghoul = std::make_unique<Monster>("è…çƒ‚å°¸é¬¼", 70, 20, 60);
-    ghoul->dropItems.emplace_back(std::make_shared<Item>("æ•£å‘ç€è¯¡å¼‚å…‰èŠ’çš„æ™¶æ ¸", "å¯ä»¥å–é’±", "æ‚ç‰©", 0));
-    ghoul->dropItems.emplace_back(std::make_shared<Item>("è“å®çŸ³", "è·å¾—10ç‚¹å…ä¼¤ï¼Œé€šå…³å®çŸ³", "å®çŸ³", 0));
+    //5 ºÚ°µË®ÀÎ
+    auto r5 = std::make_shared<Room>(5, "ºÚ°µË®ÀÎ", "Ôø¾­¹ØÑºÇô·¸µÄË®ÀÎ£¬¸¯ÀÃÊ¬¹íÓÎµ´ÓÚ´Ë¡£", false, false,true);
+    auto ghoul = std::make_unique<Monster>("¸¯ÀÃÊ¬¹í", 70, 20, 60);
+    ghoul->dropItems.emplace_back(std::make_shared<Item>("É¢·¢×Å¹îÒì¹âÃ¢µÄ¾§ºË", "¿ÉÒÔÂôÇ®", "ÔÓÎï", 0));
+    ghoul->dropItems.emplace_back(std::make_shared<Item>("À¶±¦Ê¯", "»ñµÃ10µãÃâÉË£¬Í¨¹Ø±¦Ê¯", "±¦Ê¯", 0));
     r5->monsters.push_back(std::move(ghoul));
     for (int i = 0; i < 3; i++)
     {
-        auto sGhoul = std::make_unique<Monster>("å°å°¸é¬¼", 35, 10, 30);
-        sGhoul->dropItems.emplace_back(std::make_shared<Item>("ç°æ‰‘æ‰‘çš„æ™¶æ ¸", "å¯ä»¥å–é’±", "æ‚ç‰©", 0));
+        auto sGhoul = std::make_unique<Monster>("Ğ¡Ê¬¹í", 35, 10, 30);
+        sGhoul->dropItems.emplace_back(std::make_shared<Item>("»ÒÆËÆËµÄ¾§ºË", "¿ÉÒÔÂôÇ®", "ÔÓÎï", 0));
         r5->monsters.push_back(std::move(sGhoul));
     }
     roomList.push_back(r5);
 
-    //6 è››ä¸å¸˜æ´
-    auto r6 = std::make_shared<Room>(6, "è››ä¸å¸˜æ´", "æ´ç©´éå¸ƒåšåšçš„è››ç½‘ï¼Œèœ˜è››æ²™æ²™çˆ¬åŠ¨ã€‚", false, false, true);
-    auto poisonSpider = std::make_unique<Monster>("æ¯’èœ˜è››", 80, 24, 80);
-    poisonSpider->dropItems.emplace_back(std::make_shared<Item>("å®Œå¥½çš„è››ä¸", "æŸç¼šæ•Œäºº2å›åˆ", "æ‚ç‰©", 0));
-    poisonSpider->dropItems.emplace_back(std::make_shared<Item>("ç»¿å®çŸ³", "æˆ˜åå›å¤30è¡€é‡ï¼Œé€šå…³å®çŸ³", "å®çŸ³", 0));
+    //6 ÖëË¿Á±¶´
+    auto r6 = std::make_shared<Room>(6, "ÖëË¿Á±¶´", "¶´Ñ¨±é²¼ºñºñµÄÖëÍø£¬Ö©ÖëÉ³É³ÅÀ¶¯¡£", false, false,true);
+    auto poisonSpider = std::make_unique<Monster>("¶¾Ö©Öë", 80, 24, 80);
+    poisonSpider->dropItems.emplace_back(std::make_shared<Item>("ÍêºÃµÄÖëË¿", "Êø¸¿µĞÈË2»ØºÏ", "ÔÓÎï", 0));
+    poisonSpider->dropItems.emplace_back(std::make_shared<Item>("ÂÌ±¦Ê¯", "Õ½ºó»Ø¸´30ÑªÁ¿£¬Í¨¹Ø±¦Ê¯", "±¦Ê¯", 0));
     r6->monsters.push_back(std::move(poisonSpider));
     for (int i = 0; i < 3; i++)
     {
-        auto sSpider = std::make_unique<Monster>("å°èœ˜è››", 40, 12, 40);
-        sSpider->dropItems.emplace_back(std::make_shared<Item>("ç ´æŸçš„è››ä¸", "å¯ä»¥å–é’±", "æ‚ç‰©", 0));
+        auto sSpider = std::make_unique<Monster>("Ğ¡Ö©Öë", 40, 12, 40);
+        sSpider->dropItems.emplace_back(std::make_shared<Item>("ÆÆËğµÄÖëË¿", "¿ÉÒÔÂôÇ®", "ÔÓÎï", 0));
         r6->monsters.push_back(std::move(sSpider));
     }
     roomList.push_back(r6);
 
-    //7 åºŸå¼ƒåœ°çª–ã€é’¥åŒ™æˆ¿é—´ï¼Œé¼ é¼ å¤§ç‹NPCã€‘
-    auto r7 = std::make_shared<Room>(7, "åºŸå¼ƒåœ°çª–", "åºŸå¼ƒåœ°çª–ï¼Œé¼ é¼ å¤§ç‹ç›˜è¸åœ¨æ­¤ï¼Œå¯ä»¥æ‹¿åˆ°éª¸éª¨å¯†å®¤é’¥åŒ™ã€‚", false, true, true);
-    auto mouseKing = std::make_unique<Npc>("é¼ é¼ å¤§ç‹", "å±å±ï¼å¤–æ¥å†’é™©è€…ï¼ä¸è¦æ”»å‡»æˆ‘ï¼Œæˆ‘ä¼šç»™äºˆä½ ç¤¼ç‰©ï¼");
+    //7 ·ÏÆúµØ½Ñ¡¾Ô¿³×·¿¼ä£¬ÊóÊó´óÍõNPC¡¿
+    auto r7 = std::make_shared<Room>(7, "·ÏÆúµØ½Ñ", "·ÏÆúµØ½Ñ£¬ÊóÊó´óÍõÅÌ¾áÔÚ´Ë£¬¿ÉÒÔÄÃµ½º¡¹ÇÃÜÊÒÔ¿³×¡£", false, true,true);
+    auto mouseKing = std::make_unique<Npc>("ÊóÊó´óÍõ", "Ö¨Ö¨£¡ÍâÀ´Ã°ÏÕÕß£¡²»Òª¹¥»÷ÎÒ£¬ÎÒ»á¸øÓèÄãÀñÎï£¡");
     r7->npcs.push_back(std::move(mouseKing));
-    auto mer2 = std::make_unique<Merchant>("é»‘å¸‚å•†äºº", "åœ°çª–ä¹Ÿæœ‰æˆ‘çš„æ‘Šä½ï¼");
-    mer2->shopGoods.push_back({ std::make_shared<Item>("ç”Ÿå‘½è¯æ°´","å›æ»¡è¡€é‡","æ¶ˆè€—å“",0),100 });
+    auto mer2 = std::make_unique<Merchant>("ºÚÊĞÉÌÈË", "µØ½ÑÒ²ÓĞÎÒµÄÌ¯Î»£¡");
+    mer2->shopGoods.push_back({ std::make_shared<Item>("ÉúÃüÒ©Ë®","»ØÂúÑªÁ¿","ÏûºÄÆ·",0),100 });
     r7->npcs.push_back(std::move(mer2));
     roomList.push_back(r7);
 
-    //8 åœ°ç‰¢å‡ºå£ã€æ·±æ¸Šé­”ç‰©BOSSã€‘
-    auto r8 = std::make_shared<Room>(8, "åœ°ç‰¢å‡ºå£", "é€ƒç¦»åœ°ç‰¢çš„å¤§é—¨ï¼å¼ºå¤§çš„æ·±æ¸Šé­”ç‰©å®ˆåœ¨è¿™é‡Œã€‚", false, false, true);
-    auto boss = std::make_unique<Monster>("æ·±æ¸Šé­”ç‰©", 200, 50, 200);
-    boss->dropItems.emplace_back(std::make_shared<Item>("é»‘å®çŸ³", "æœ€ç»ˆé€šå…³å®çŸ³", "å®çŸ³", 0));
+    //8 µØÀÎ³ö¿Ú¡¾ÉîÔ¨Ä§ÎïBOSS¡¿
+    auto r8 = std::make_shared<Room>(8, "µØÀÎ³ö¿Ú", "ÌÓÀëµØÀÎµÄ´óÃÅ£¡Ç¿´óµÄÉîÔ¨Ä§ÎïÊØÔÚÕâÀï¡£", false, false,true);
+    auto boss = std::make_unique<Monster>("ÉîÔ¨Ä§Îï", 200, 50, 200);
+    boss->dropItems.emplace_back(std::make_shared<Item>("ºÚ±¦Ê¯", "×îÖÕÍ¨¹Ø±¦Ê¯", "±¦Ê¯", 0));
     r8->monsters.push_back(std::move(boss));
     roomList.push_back(r8);
 }
@@ -125,7 +125,7 @@ bool moveToRoom(int targetId, Player& player, std::vector<std::shared_ptr<Room>>
         Room& cur = **curRoomIt;
         if (roomHasAliveMonster(cur))
         {
-            std::cout << "\næœ¬æˆ¿é—´è¿˜æœ‰æ´»ç€çš„æ€ªç‰©ï¼Œå¿…é¡»å‡»æ€æ€ªç‰©æ‰å¯ä»¥ç¦»å¼€æˆ¿é—´ï¼\n";
+            std::cout << "\n±¾·¿¼ä»¹ÓĞ»î×ÅµÄ¹ÖÎï£¬±ØĞë»÷É±¹ÖÎï²Å¿ÉÒÔÀë¿ª·¿¼ä£¡\n";
             return false;
         }
     }
@@ -133,7 +133,7 @@ bool moveToRoom(int targetId, Player& player, std::vector<std::shared_ptr<Room>>
     auto it = std::find_if(roomList.begin(), roomList.end(), [&](const std::shared_ptr<Room>& r) { return r->id == targetId; });
     if (it == roomList.end())
     {
-        std::cout << "æ²¡æœ‰è¿™ä¸ªæˆ¿é—´ç¼–å·ï¼\n";
+        std::cout << "Ã»ÓĞÕâ¸ö·¿¼ä±àºÅ£¡\n";
         return false;
     }
     auto& targetRoom = *it;
@@ -143,11 +143,11 @@ bool moveToRoom(int targetId, Player& player, std::vector<std::shared_ptr<Room>>
         if (targetRoom->id == 2 && player.hasBoneKey)
         {
             targetRoom->locked = false;
-            std::cout << "ä½¿ç”¨é’¥åŒ™æ‰“å¼€éª¸éª¨å¯†å®¤å¤§é—¨ï¼\n";
+            std::cout << "Ê¹ÓÃÔ¿³×´ò¿ªº¡¹ÇÃÜÊÒ´óÃÅ£¡\n";
         }
         else
         {
-            std::cout << "è¯¥æˆ¿é—´å·²ä¸Šé”ï¼Œç¥ç§˜çš„ä¸œè¥¿åœ¨é—¨åç­‰ç€ä½ ï¼Œä½ æœ‰ç§ä¸ç¥¥çš„é¢„æ„Ÿ\n";
+            std::cout << "¸Ã·¿¼äÒÑÉÏËø£¬ÉñÃØµÄ¶«Î÷ÔÚÃÅºóµÈ×ÅÄã£¬ÄãÓĞÖÖ²»ÏéµÄÔ¤¸Ğ\n";
             return false;
         }
     }
@@ -169,22 +169,22 @@ bool moveToRoom(int targetId, Player& player, std::vector<std::shared_ptr<Room>>
         targetRoom->monsters.clear();
         for (int i = 0; i < 5; i++)
         {
-            auto bat = std::make_unique<Monster>("å°è™è ", 15, 3, 10);
-            bat->dropItems.emplace_back(std::make_shared<Item>("è™è çš„ç¿…è†€", "å¯ä»¥å–é’±", "æ‚ç‰©", 0));
-            bat->dropItems.emplace_back(std::make_shared<Item>("å¤œæ˜ç ‚", "å¯ä»¥å–é’±", "æ‚ç‰©", 0));
+            auto bat = std::make_unique<Monster>("Ğ¡òùòğ", 15, 3, 10);
+            bat->dropItems.emplace_back(std::make_shared<Item>("òùòğµÄ³á°ò", "¿ÉÒÔÂôÇ®", "ÔÓÎï", 0));
+            bat->dropItems.emplace_back(std::make_shared<Item>("Ò¹Ã÷É°", "¿ÉÒÔÂôÇ®", "ÔÓÎï", 0));
             targetRoom->monsters.push_back(std::move(bat));
         }
-        std::cout << "å›åˆ°å¹½æš—å›å»Šï¼Œè™è é‡æ–°åˆ·æ–°äº†ï¼\n";
+        std::cout << "»Øµ½ÓÄ°µ»ØÀÈ£¬òùòğÖØĞÂË¢ĞÂÁË£¡\n";
     }
 
     player.currentRoomId = targetId;
-    std::cout << "\nä½ æ¥åˆ°ï¼š" << targetRoom->name << "ã€‚" << targetRoom->description << "\n";
-    //è¿›å…¥åºŸå¼ƒåœ°çª–è§¦å‘é¼ é¼ å¤§ç‹
-    if (targetRoom->id == 7)
+    std::cout << "\nÄãÀ´µ½£º" << targetRoom->name << "¡£" << targetRoom->description << "\n";
+    //½øÈë·ÏÆúµØ½Ñ´¥·¢ÊóÊó´óÍõ
+    if(targetRoom->id ==7)
     {
-        for (auto& npc : targetRoom->npcs)
+        for(auto& npc : targetRoom->npcs)
         {
-            if (npc->name == "é¼ é¼ å¤§ç‹" && !npc->triggeredOnce)
+            if(npc->name == "ÊóÊó´óÍõ" && !npc->triggeredOnce)
             {
                 npc->triggeredOnce = true;
                 ChestStory::meetMouseKing(player);
