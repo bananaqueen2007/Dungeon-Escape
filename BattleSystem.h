@@ -1,5 +1,6 @@
 #ifndef BATTLESYSTEM_H
 #define BATTLESYSTEM_H
+
 #include <iostream>
 #include <memory>
 #include "Player.h"
@@ -9,11 +10,10 @@
 class BattleSystem
 {
 public:
-    //返回true击杀成功，false死亡
-    static bool startFight(Player& player, Room& currentRoom, const std::string& monsterName);
+    //返回：1成功击杀；0玩家死亡；2暗影斗篷跳过逃跑（怪物存活）
+    static int startFight(Player& player, Room& currentRoom, const std::string& monsterName);
 private:
     static void poisonEffect(Player& player, int& poisonTurn);
-    //怪物死亡，掉落，宝石判断
     static void monsterDrop(Player& player, std::unique_ptr<Monster>& deadMonster);
 };
 

@@ -8,7 +8,8 @@ void Merchant::showShop()
     std::cout << "\n====商人商店====" << std::endl;
     for (auto& g : shopGoods)
     {
-        std::cout << g.first->name << "【" << g.first->type << "】 价格:" << g.second << "金币\n";
+        std::cout << g.first->name << "【" << g.first->type << "】 "
+            << g.first->desc << " 价格:" << g.second << "金币\n";
     }
 }
 
@@ -21,9 +22,8 @@ void Merchant::buyItem(const std::string& goodsName, Player& player)
             if (player.gold >= g.second)
             {
                 player.gold -= g.second;
-                //复制物品
                 auto newItem = std::make_shared<Item>(*g.first);
-                player.pickUpItem(newItem);
+                player.pickUpItem(newItem, true); //true=购买
             }
             else
             {

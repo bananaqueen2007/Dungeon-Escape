@@ -1,5 +1,6 @@
 #ifndef MERCHANT_H
 #define MERCHANT_H
+
 #include "Npc.h"
 #include <vector>
 #include <memory>

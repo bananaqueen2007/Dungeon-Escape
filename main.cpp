@@ -5,7 +5,6 @@
 
 int main()
 {
-
     srand((unsigned)time(nullptr));
     GameManager game;
     game.showMainMenu();
