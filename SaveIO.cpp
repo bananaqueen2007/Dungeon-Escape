@@ -33,12 +33,6 @@ bool SaveIO::saveToFile(const Player& player, const std::vector<std::shared_ptr<
         outFile << it->name << "|" << it->desc << "|" << it->type << "|" << it->atkBonus << "|" << it->stackCount << std::endl;
     }
 
-    outFile << player.skinList.size() << std::endl;
-    for (auto& it : player.skinList)
-    {
-        outFile << it->name << "|" << it->desc << "|" << it->type << "|" << it->atkBonus << "|" << it->stackCount << std::endl;
-    }
-
     outFile << roomList.size() << std::endl;
     for (auto& r : roomList)
     {
@@ -94,27 +88,6 @@ bool SaveIO::loadFromFile(Player& player, std::vector<std::shared_ptr<Room>>& ro
         auto item = std::make_shared<Item>(name, desc, type, atk);
         item->stackCount = stack;
         player.backpack.push_back(item);
-    }
-
-    int skinCnt; inFile >> skinCnt;
-    inFile.ignore();
-    player.skinList.clear();
-    for (int i = 0; i < skinCnt; i++)
-    {
-        std::string line;
-        std::getline(inFile, line);
-        size_t p1 = line.find('|');
-        size_t p2 = line.find('|', p1 + 1);
-        size_t p3 = line.find('|', p2 + 1);
-        size_t p4 = line.find('|', p3 + 1);
-        std::string name = line.substr(0, p1);
-        std::string desc = line.substr(p1 + 1, p2 - p1 - 1);
-        std::string type = line.substr(p2 + 1, p3 - p2 - 1);
-        int atk = std::stoi(line.substr(p3 + 1, p4 - p3 - 1));
-        int stack = std::stoi(line.substr(p4 + 1));
-        auto item = std::make_shared<Item>(name, desc, type, atk);
-        item->stackCount = stack;
-        player.skinList.push_back(item);
     }
 
     int roomCnt; inFile >> roomCnt;

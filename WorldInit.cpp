@@ -26,29 +26,22 @@ std::vector<std::shared_ptr<Room>> buildDungeonWorld()
     auto merchant1 = std::make_shared<Merchant>("黑市商人", "欢迎来到黑市，冒险者，需要买点什么？");
 
     //====商店物品严格按照文档====
-    //可重复购买消耗品  emplace_back(物品指针, 价格) 匹配pair<shared_ptr<Item>,int>
-    merchant1->shopGoods.emplace_back(std::make_shared<Item>("解毒药剂", "消耗品", "防御毒蜘蛛的毒", 300), 300);
-    merchant1->shopGoods.emplace_back(std::make_shared<Item>("幸运药水", "消耗品", "最大生命上限+20", 200), 200);
-    merchant1->shopGoods.emplace_back(std::make_shared<Item>("生命药水", "消耗品", "回满血量", 100), 100);
-    merchant1->shopGoods.emplace_back(std::make_shared<Item>("鸡血", "消耗品", "攻击力+50，持续两个回合", 150), 150);
-    //仅可购买一次
-    merchant1->shopGoods.emplace_back(std::make_shared<Item>("防御药水", "消耗品", "免伤50%，仅可购买一次", 500), 500);
+    // Item(名称，描述，类型，atkBonus)
+    merchant1->shopGoods.emplace_back(std::make_shared<Item>("解毒药剂", "防御毒蜘蛛的毒", "消耗品", 0), 300);
+    merchant1->shopGoods.emplace_back(std::make_shared<Item>("幸运药水", "最大生命上限+20", "消耗品", 0), 200);
+    merchant1->shopGoods.emplace_back(std::make_shared<Item>("生命药水", "回满血量", "消耗品", 0), 100);
+    merchant1->shopGoods.emplace_back(std::make_shared<Item>("鸡血", "攻击力+20，持续两个回合", "消耗品", 0), 150);
+    merchant1->shopGoods.emplace_back(std::make_shared<Item>("防御药水", "一回合内免伤50%", "消耗品", 0), 250);
 
-    //武器：不能使用5参数构造！先创建，再赋值攻击加成
-    auto dao1 = std::make_shared<Item>("好刀", "武器", "攻击+10", 200);
-    dao1->atkBonus = 10;
+    //武器
+    auto dao1 = std::make_shared<Item>("好刀", "攻击+10", "武器", 10);
     merchant1->shopGoods.emplace_back(dao1, 200);
 
-    auto dao2 = std::make_shared<Item>("非常好的刀", "武器", "攻击+20", 400);
-    dao2->atkBonus = 20;
+    auto dao2 = std::make_shared<Item>("非常好的刀", "攻击+20", "武器", 20);
     merchant1->shopGoods.emplace_back(dao2, 400);
 
-    auto dao3 = std::make_shared<Item>("无敌至尊宝刀", "武器", "攻击+35", 600);
-    dao3->atkBonus = 35;
+    auto dao3 = std::make_shared<Item>("无敌至尊宝刀", "攻击+35", "武器", 35);
     merchant1->shopGoods.emplace_back(dao3, 600);
-
-    //外观披风
-    merchant1->shopGoods.emplace_back(std::make_shared<Item>("暗影斗篷", "外观披风", "装备后隐匿行踪，不被怪物发现，不触发战斗", 500), 500);
 
     r3->npcs.push_back(merchant1);
     auto prisoner = std::make_shared<Npc>("流浪囚徒", "又进来了一个冒险者（喃喃自语），小毛头，我想我必须提醒你，最后的开门的秘密存在于六个房间里，不要因为自大遗漏任何一个……");
@@ -70,12 +63,16 @@ std::vector<std::shared_ptr<Room>> buildDungeonWorld()
     r6->monsters.emplace_back(std::make_unique<Monster>("毒蜘蛛", 80, 24, 80));
     world.push_back(r6);
 
-    //7 废弃地窖：第二个黑市商人
+    //7 废弃地窖：第二个黑市商人 + Npc鼠鼠大王（不是怪物！）
     auto r7 = std::make_shared<Room>(7, "废弃地窖", "潮湿地窖，鼠鼠大王盘踞此地，也有黑市商人在此摆摊。", false, false);
     auto merchant2 = std::make_shared<Merchant>("黑市商人", "地窖分店，货物和上面一样，随便看看。");
     merchant2->shopGoods.assign(merchant1->shopGoods.begin(), merchant1->shopGoods.end());
     r7->npcs.push_back(merchant2);
-    r7->monsters.emplace_back(std::make_unique<Monster>("鼠鼠大王", 90, 28, 90));
+
+    //鼠鼠大王是对话NPC，放入npcs，不要放到monsters
+    auto mouseKing = std::make_shared<Npc>("鼠鼠大王", "吱吱！外来冒险者！不要攻击我，我会给予你礼物！");
+    r7->npcs.push_back(mouseKing);
+
     world.push_back(r7);
 
     //8 地牢出口 BOSS深渊魔物

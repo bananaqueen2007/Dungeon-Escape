@@ -1,7 +1,12 @@
 #include "Merchant.h"
 #include <iostream>
 
-Merchant::Merchant(std::string name, std::string talk) :Npc(name, talk) {}
+// 静态全局：全局标记幸运药水是否已经售出，所有商人共用
+static bool g_soldLuckyPotion = false;
+
+Merchant::Merchant(std::string name, std::string talk) :Npc(name, talk)
+{
+}
 
 void Merchant::showShop()
 {
@@ -19,11 +24,23 @@ void Merchant::buyItem(const std::string& goodsName, Player& player)
     {
         if (g.first->name == goodsName)
         {
+            //幸运药水全局仅允许购买一次
+            if (goodsName == "幸运药水" && g_soldLuckyPotion)
+            {
+                std::cout << "幸运药水已经卖光了！\n";
+                return;
+            }
+
             if (player.gold >= g.second)
             {
                 player.gold -= g.second;
                 auto newItem = std::make_shared<Item>(*g.first);
-                player.pickUpItem(newItem, true); //true=购买
+                player.pickUpItem(newItem, true);
+
+                if (goodsName == "幸运药水")
+                {
+                    g_soldLuckyPotion = true;
+                }
             }
             else
             {
