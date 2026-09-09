@@ -2,6 +2,7 @@
 #include "ChestStory.h"
 #include <iostream>
 #include <windows.h>
+#include <vector>
 
 extern int batKillCount;
 int batKillCount = 0;
@@ -11,11 +12,45 @@ int batKillCount = 0;
 
 int BattleSystem::startFight(Player& player, Room& currentRoom, const std::string& monsterName)
 {
-    //【14】必须打完小怪，才能打房间大怪
-    if (roomHasSmallMonsterAlive(currentRoom, monsterName))
+    //====修复bug9：仅打强敌才校验对应小怪存活，打小怪不拦截====
+    bool isBigMonster = false;
+    std::vector<std::string> requiredMinions;
+    if (monsterName == "巨型蟾蜍") {
+        isBigMonster = true;
+        requiredMinions = { "小蟾蜍" };
+    }
+    else if (monsterName == "腐烂尸鬼") {
+        isBigMonster = true;
+        requiredMinions = { "小尸鬼" };
+    }
+    else if (monsterName == "毒蜘蛛") {
+        isBigMonster = true;
+        requiredMinions = { "小蜘蛛" };
+    }
+
+    if (isBigMonster)
     {
-        std::cout << "\n房间还有存活的小怪，必须先清理小怪，才能攻击这个强敌！\n";
-        return 0;
+        bool minionAlive = false;
+        for (auto& m : currentRoom.monsters)
+        {
+            if (m->hp > 0)
+            {
+                for (auto& minionName : requiredMinions)
+                {
+                    if (m->name == minionName)
+                    {
+                        minionAlive = true;
+                        break;
+                    }
+                }
+            }
+            if (minionAlive) break;
+        }
+        if (minionAlive)
+        {
+            std::cout << "\n房间还有存活的小怪，必须先清理小怪，才能攻击这个强敌！\n";
+            return 0;
+        }
     }
 
     Monster* targetMonster = nullptr;
@@ -37,11 +72,11 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
         return 0;
     }
 
-    RED; //【13】战斗回合红色
+    RED;
     std::cout << "\n====战斗开始！对阵：" << targetMonster->name << "====" << std::endl;
     player.calcTotalAttack();
 
-    bool hasCloak = (false); //已经删除斗篷，逻辑保留但永远false
+    bool hasCloak = (false);
     bool canCloakEscape = false;
 
     if (canCloakEscape)
@@ -72,7 +107,7 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
         targetMonster->hp -= dmgDeal;
         std::cout << "你对" << targetMonster->name << "造成 " << dmgDeal << "点伤害" << std::endl;
 
-        //吸血刀逻辑【8】攻击+20，造成多少伤害就回多少血
+        //吸血刀逻辑：敌人掉多少血量，玩家回复多少血量【需求5】
         if (player.equipWeapon && player.equipWeapon->name == "吸血刀")
         {
             player.hp += dmgDeal;
@@ -104,14 +139,14 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
         std::cout << "【怪物回合】" << targetMonster->name << "发起攻击！" << std::endl;
         player.takeDamage(targetMonster->attack);
 
-        //毒蜘蛛上毒【10】中毒后毒素回合不会自己消耗，只能解毒药剂清除
+        //毒蜘蛛上毒
         if (targetMonster->name == "毒蜘蛛" && player.poisonTurn <= 0)
         {
-            player.poisonTurn = 999; //永久中毒，解毒药剂清零
+            player.poisonTurn = 999;
             std::cout << "你被毒蜘蛛攻击后中毒了！毒素将持续侵蚀你，需要解毒药剂清除！" << std::endl;
         }
 
-        //毒素效果，只有poisonTurn>0才扣血，不会自动递减回合！！
+        //毒素效果
         if (player.poisonTurn > 0)
         {
             player.hp -= 4;
@@ -140,7 +175,6 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
 
 void BattleSystem::poisonEffect(Player& player, int& poisonTurn)
 {
-    //本函数废弃，毒素逻辑改写，保留空壳
 }
 
 void BattleSystem::monsterDrop(Player& player, std::unique_ptr<Monster>& deadMonster)

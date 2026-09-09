@@ -27,7 +27,6 @@ public:
     int poisonTurn;
 
     std::shared_ptr<Item> equipWeapon;
-    //É¾³ýequipCloak¡¢skinList
 
     std::vector<std::shared_ptr<Item>> backpack;
 

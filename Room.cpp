@@ -19,19 +19,6 @@ bool roomHasAliveMonster(Room& curRoom)
     return false;
 }
 
-//【14】房间还有小怪活着，不能打大怪
-bool roomHasSmallMonsterAlive(Room& curRoom, const std::string& bigMonsterName)
-{
-    for (auto& m : curRoom.monsters)
-    {
-        if (m->hp > 0 && m->name != bigMonsterName)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
 void initAllRooms(std::vector<std::shared_ptr<Room>>& roomList)
 {
     roomList.clear();
@@ -58,15 +45,14 @@ void initAllRooms(std::vector<std::shared_ptr<Room>>& roomList)
     auto prisoner = std::make_unique<Npc>("流浪囚徒", "又进来了一个冒险者（喃喃自语），小毛头，我想我必须提醒你，最后的开门的秘密存在于六个房间里，不要因为自大遗漏任何一个……");
     r3->npcs.push_back(std::move(prisoner));
     auto merchant = std::make_unique<Merchant>("黑市商人", "欢迎光临，冒险者！看看我的商品吧。");
-    merchant->shopGoods.push_back({ std::make_shared<Item>("解毒药剂","解除蜘蛛毒素","消耗品",0),300 });//【16】
+    merchant->shopGoods.push_back({ std::make_shared<Item>("解毒药剂","解除蜘蛛毒素","消耗品",0),300 });
     merchant->shopGoods.push_back({ std::make_shared<Item>("幸运药水","最大生命+20","消耗品",0),200 });
     merchant->shopGoods.push_back({ std::make_shared<Item>("生命药水","回满血量","消耗品",0),100 });
     merchant->shopGoods.push_back({ std::make_shared<Item>("鸡血","攻击+20持续两回合","消耗品",0),150 });
-    merchant->shopGoods.push_back({ std::make_shared<Item>("防御药水","一回合内免伤50%","消耗品",0),250 });//【17】价格250
+    merchant->shopGoods.push_back({ std::make_shared<Item>("防御药水","一回合内免伤50%","消耗品",0),250 });
     merchant->shopGoods.push_back({ std::make_shared<Item>("好刀","攻击+10","武器",10),200 });
     merchant->shopGoods.push_back({ std::make_shared<Item>("非常好的刀","攻击+20","武器",20),400 });
     merchant->shopGoods.push_back({ std::make_shared<Item>("无敌至尊宝刀","攻击+35","武器",35),600 });
-    //【7】删除暗影斗篷
     r3->npcs.push_back(std::move(merchant));
     roomList.push_back(r3);
 
@@ -101,7 +87,6 @@ void initAllRooms(std::vector<std::shared_ptr<Room>>& roomList)
     //6 蛛丝帘洞
     auto r6 = std::make_shared<Room>(6, "蛛丝帘洞", "洞穴遍布厚厚的蛛网，蜘蛛沙沙爬动。", false, false, true);
     auto poisonSpider = std::make_unique<Monster>("毒蜘蛛", 80, 24, 80);
-    //【7】删除完好蛛丝效果描述
     poisonSpider->dropItems.emplace_back(std::make_shared<Item>("完好的蛛丝", "可以卖钱", "杂物", 0));
     poisonSpider->dropItems.emplace_back(std::make_shared<Item>("绿宝石", "战后回复30血量，通关宝石", "宝石", 0));
     r6->monsters.push_back(std::move(poisonSpider));
@@ -122,8 +107,8 @@ void initAllRooms(std::vector<std::shared_ptr<Room>>& roomList)
     r7->npcs.push_back(std::move(mer2));
     roomList.push_back(r7);
 
-    //8 地牢出口【深渊魔物BOSS】
-    auto r8 = std::make_shared<Room>(8, "地牢出口", "逃离地牢的大门！强大的深渊魔物守在这里。", false, false, true);
+    //8 地牢出口【深渊魔物BOSS】【需求10 hasChest=false 删除宝箱】
+    auto r8 = std::make_shared<Room>(8, "地牢出口", "逃离地牢的大门！强大的深渊魔物守在这里。", false, false, false);
     auto boss = std::make_unique<Monster>("深渊魔物", 200, 50, 200);
     boss->dropItems.emplace_back(std::make_shared<Item>("黑宝石", "最终通关宝石", "宝石", 0));
     r8->monsters.push_back(std::move(boss));
@@ -180,24 +165,26 @@ bool moveToRoom(int targetId, Player& player, std::vector<std::shared_ptr<Room>>
 
     player.currentRoomId = targetId;
     std::cout << "\n你来到：" << targetRoom->name << "。" << targetRoom->description << "\n";
-    //【2】进入房间提示look
     std::cout << "提示：输入look查看房间完整信息\n";
 
-    //进入废弃地窖触发鼠鼠大王
+    //进入废弃地窖触发鼠鼠大王【需求2修复：拿到礼物才标记triggeredOnce】
     if (targetRoom->id == 7)
     {
         for (auto& npc : targetRoom->npcs)
         {
-            if (npc->name == "鼠鼠大王" && !npc->triggeredOnce)
+            if (npc->name == "鼠鼠大王" && !player.hasBoneKey)
             {
-                npc->triggeredOnce = true;
-                ChestStory::meetMouseKing(player);
+                bool getGift = ChestStory::meetMouseKing(player);
+                if (getGift)
+                {
+                    npc->triggeredOnce = true;
+                }
             }
         }
     }
     return true;
 }
-//新增三参数构造实现
+
 Room::Room(int id_, std::string n_, std::string d_)
     : id(id_), name(n_), description(d_), locked(false), giveKey(false), chestOpened(false), hasChest(true)
 {

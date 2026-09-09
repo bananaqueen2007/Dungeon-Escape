@@ -24,7 +24,7 @@ void Item::use(Player& player)
         }
         else if (name == "鸡血")
         {
-            player.tempAtkBuff = 20; //【15】鸡血改为+20
+            player.tempAtkBuff = 20;
             player.tempBuffTurn = 2;
             std::cout << "喝下鸡血！接下来2回合攻击+20！\n";
         }
