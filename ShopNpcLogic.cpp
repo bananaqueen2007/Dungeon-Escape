@@ -2,6 +2,10 @@
 #include"ChestStory.h"
 #include <iostream>
 #include <algorithm>
+#include <windows.h>
+
+#define BLUE  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),9)
+#define WHITE SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),7)
 
 void ShopNpcLogic::npcTalk(Room& room, Player& player, const std::string& npcName)
 {
@@ -12,7 +16,8 @@ void ShopNpcLogic::npcTalk(Room& room, Player& player, const std::string& npcNam
             npc->talk();
             if (npcName == "鼠鼠大王")
             {
-                if (!npc->triggeredOnce)
+                //【9】拿到礼物后不再触发
+                if (!npc->triggeredOnce && !player.hasBoneKey)
                 {
                     npc->triggeredOnce = true;
                     ChestStory::meetMouseKing(player);
@@ -31,7 +36,9 @@ bool ShopNpcLogic::openShop(Room& curRoom)
         Merchant* mer = dynamic_cast<Merchant*>(npc.get());
         if (mer != nullptr)
         {
+            BLUE; //【13】商店页面蓝色
             mer->showShop();
+            WHITE;
             return true;
         }
     }
@@ -59,7 +66,20 @@ bool ShopNpcLogic::sellGoods(Player& player, const std::string& itemName)
     auto dropPtr = player.dropItem(itemName);
     if (dropPtr != nullptr)
     {
-        int sellPrice = dropPtr->stackCount * 30;
+        int price = 0;
+        //【5】修正所有杂物卖出单价
+        if (itemName == "蝙蝠的翅膀") price = 10;
+        else if (itemName == "夜明砂") price = 15;
+        else if (itemName == "生锈的刀") price = 9;
+        else if (itemName == "蟾蜍粘液") price = 12;
+        else if (itemName == "珍贵的蟾蜍粘液") price = 30;
+        else if (itemName == "灰扑扑的晶核") price = 20;
+        else if (itemName == "散发着诡异光芒的晶核") price = 50;
+        else if (itemName == "破损的蛛丝") price = 15;
+        else if (itemName == "完好的蛛丝") price = 40;
+        else price = 30; //兜底
+
+        int sellPrice = dropPtr->stackCount * price;
         player.gold += sellPrice;
         std::cout << "卖出物品，获得" << sellPrice << "金币。" << std::endl;
         return true;

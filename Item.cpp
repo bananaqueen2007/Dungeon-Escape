@@ -24,9 +24,9 @@ void Item::use(Player& player)
         }
         else if (name == "¼¦Ñª")
         {
-            player.tempAtkBuff = 50;
+            player.tempAtkBuff = 20; //¡¾15¡¿¼¦Ñª¸ÄÎª+20
             player.tempBuffTurn = 2;
-            std::cout << "ºÈÏÂ¼¦Ñª£¡½ÓÏÂÀ´2»ØºÏ¹¥»÷+50£¡\n";
+            std::cout << "ºÈÏÂ¼¦Ñª£¡½ÓÏÂÀ´2»ØºÏ¹¥»÷+20£¡\n";
         }
         else if (name == "·ÀÓùÒ©Ë®")
         {

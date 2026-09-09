@@ -1,12 +1,23 @@
 #include "BattleSystem.h"
 #include "ChestStory.h"
 #include <iostream>
+#include <windows.h>
 
 extern int batKillCount;
 int batKillCount = 0;
 
+#define RED  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),12)
+#define WHITE SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),7)
+
 int BattleSystem::startFight(Player& player, Room& currentRoom, const std::string& monsterName)
 {
+    //【14】必须打完小怪，才能打房间大怪
+    if (roomHasSmallMonsterAlive(currentRoom, monsterName))
+    {
+        std::cout << "\n房间还有存活的小怪，必须先清理小怪，才能攻击这个强敌！\n";
+        return 0;
+    }
+
     Monster* targetMonster = nullptr;
     int idx = -1;
     for (size_t i = 0; i < currentRoom.monsters.size(); i++)
@@ -26,12 +37,12 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
         return 0;
     }
 
+    RED; //【13】战斗回合红色
     std::cout << "\n====战斗开始！对阵：" << targetMonster->name << "====" << std::endl;
     player.calcTotalAttack();
 
-    // =========暗影斗篷选择分支=========
-    bool hasCloak = (player.equipCloak != nullptr && player.equipCloak->name == "暗影斗篷");
-    bool canCloakEscape = hasCloak && (targetMonster->hp < player.totalAtk);
+    bool hasCloak = (false); //已经删除斗篷，逻辑保留但永远false
+    bool canCloakEscape = false;
 
     if (canCloakEscape)
     {
@@ -45,10 +56,10 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
         if (op == '2')
         {
             std::cout << "你披上暗影斗篷悄悄隐匿逃走，没有获得任何战利品！怪物仍然在这里！\n";
-            return 2; // 斗篷跳过，怪物存活
+            WHITE;
+            return 2;
         }
     }
-    // 不满足条件，则不弹出选择，直接进入战斗
 
     int poisonTurn = player.poisonTurn;
 
@@ -57,8 +68,17 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
         //玩家回合
         player.calcTotalAttack();
         std::cout << "【你的回合】你的攻击力：" << player.totalAtk << std::endl;
-        targetMonster->hp -= player.totalAtk;
-        std::cout << "你对" << targetMonster->name << "造成 " << player.totalAtk << "点伤害" << std::endl;
+        int dmgDeal = player.totalAtk;
+        targetMonster->hp -= dmgDeal;
+        std::cout << "你对" << targetMonster->name << "造成 " << dmgDeal << "点伤害" << std::endl;
+
+        //吸血刀逻辑【8】攻击+20，造成多少伤害就回多少血
+        if (player.equipWeapon && player.equipWeapon->name == "吸血刀")
+        {
+            player.hp += dmgDeal;
+            if (player.hp > player.maxHp) player.hp = player.maxHp;
+            std::cout << "吸血刀吸取生命！恢复" << dmgDeal << "血量\n";
+        }
 
         //怪物死亡
         if (targetMonster->hp <= 0)
@@ -76,26 +96,27 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
                 }
             }
             monsterDrop(player, currentRoom.monsters[idx]);
-            return 1; //成功击杀
+            WHITE;
+            return 1;
         }
 
         //怪物回合
         std::cout << "【怪物回合】" << targetMonster->name << "发起攻击！" << std::endl;
         player.takeDamage(targetMonster->attack);
 
-        //毒蜘蛛上毒
-        if (targetMonster->name == "毒蜘蛛" && poisonTurn <= 0)
+        //毒蜘蛛上毒【10】中毒后毒素回合不会自己消耗，只能解毒药剂清除
+        if (targetMonster->name == "毒蜘蛛" && player.poisonTurn <= 0)
         {
-            poisonTurn = 3;
-            player.poisonTurn = poisonTurn;
-            std::cout << "你被毒蜘蛛攻击后中毒了！接下来3回合每回合扣4滴血！" << std::endl;
+            player.poisonTurn = 999; //永久中毒，解毒药剂清零
+            std::cout << "你被毒蜘蛛攻击后中毒了！毒素将持续侵蚀你，需要解毒药剂清除！" << std::endl;
         }
 
-        //毒素效果
-        if (poisonTurn > 0)
+        //毒素效果，只有poisonTurn>0才扣血，不会自动递减回合！！
+        if (player.poisonTurn > 0)
         {
-            poisonEffect(player, poisonTurn);
-            player.poisonTurn = poisonTurn;
+            player.hp -= 4;
+            std::cout << "毒素侵蚀，受到4点毒素伤害！\n";
+            if (player.hp < 0) player.hp = 0;
         }
 
         //回合结束清理buff
@@ -111,17 +132,15 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
         if (player.hp <= 0)
         {
             std::cout << "你眼前一黑，倒在了地牢之中。游戏失败！" << std::endl;
-            return 0; //玩家死亡
+            WHITE;
+            return 0;
         }
     }
 }
 
 void BattleSystem::poisonEffect(Player& player, int& poisonTurn)
 {
-    player.hp -= 4;
-    std::cout << "毒素侵蚀，受到4点毒素伤害！剩余毒素回合：" << poisonTurn << std::endl;
-    poisonTurn--;
-    if (player.hp < 0) player.hp = 0;
+    //本函数废弃，毒素逻辑改写，保留空壳
 }
 
 void BattleSystem::monsterDrop(Player& player, std::unique_ptr<Monster>& deadMonster)

@@ -7,6 +7,7 @@
 #define RED  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),12)
 #define GREEN SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),10)
 #define YELLOW SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),14)
+#define BLUE  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),9)
 #define WHITE SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),7)
 
 int GameManager::safeStringToInt(const std::string& s)
@@ -15,7 +16,7 @@ int GameManager::safeStringToInt(const std::string& s)
     {
         return std::stoi(s);
     }
-    catch(...)
+    catch (...)
     {
         return -9999;
     }
@@ -25,24 +26,21 @@ void GameManager::printHelpText()
 {
     GREEN;
     std::cout << "\n====可用指令列表====" << std::endl;
+    std::cout << "help     : 显示指令帮助" << std::endl;
     std::cout << "map      : 查看地牢地图，输入数字切换房间" << std::endl;
     std::cout << "inv      : 打开背包面板" << std::endl;
     std::cout << "look     : 查看当前房间信息" << std::endl;
-    std::cout << "get 物品名: 拾取地面物品" << std::endl;
-    std::cout << "drop 物品名:丢弃物品到地面" << std::endl;
     std::cout << "use 物品名: 使用背包消耗品" << std::endl;
-    std::cout << "equip 物品名 :穿戴武器/披风" << std::endl;
-    std::cout << "unequip 武器/披风 :卸下装备放回背包" << std::endl;
+    std::cout << "equip 物品名 :穿戴武器" << std::endl;
+    std::cout << "unequip 武器 :卸下武器放回背包" << std::endl;
     std::cout << "kill 怪物名 :攻击房间怪物" << std::endl;
     std::cout << "talk NPC名字 :和NPC对话" << std::endl;
     std::cout << "shop     : 打开商人商店" << std::endl;
     std::cout << "buy 物品名 :购买商品" << std::endl;
     std::cout << "sell 物品名 :卖出背包物品" << std::endl;
     std::cout << "chest :打开当前房间宝箱" << std::endl;
-    std::cout << "skin     : 查看已收集披风外观" << std::endl;
     std::cout << "save     : 手动存档" << std::endl;
-    std::cout << "quit     : 保存并退出游戏" << std::endl;
-    std::cout << "help     : 再次显示指令帮助\n" << std::endl;
+    std::cout << "quit     : 保存并退出游戏\n" << std::endl;
     WHITE;
 }
 
@@ -58,7 +56,7 @@ void GameManager::showMainMenu()
         std::cout << "请输入选择：";
         WHITE;
         std::string buf;
-        std::getline(std::cin,buf);
+        std::getline(std::cin, buf);
         int select = safeStringToInt(buf);
 
         if (select == 1)
@@ -69,9 +67,9 @@ void GameManager::showMainMenu()
             m_player = std::make_unique<Player>(playerName);
             ChestStory::gemList.clear();
             initRooms();
-            //初始进入幽暗回廊提示
             GREEN;
             std::cout << "\n你苏醒过来，发现自己身处幽暗回廊！地牢冒险正式开始！\n";
+            std::cout << "提示：输入look查看房间完整信息\n";
             WHITE;
             gameLoop();
             break;
@@ -134,46 +132,21 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
 
     if (cmdRes.cmd == "inv")
     {
+        YELLOW; //【13】面板黄色
         m_player->showInventory();
-    }
-    else if (cmdRes.cmd == "skin")
-    {
-        m_player->showSkinList();
+        WHITE;
     }
     else if (cmdRes.cmd == "equip")
     {
         m_player->equipItem(cmdRes.arg);
     }
-    else if(cmdRes.cmd == "unequip")
+    else if (cmdRes.cmd == "unequip")
     {
         m_player->unequipItem(cmdRes.arg);
     }
     else if (cmdRes.cmd == "use")
     {
         m_player->useItem(cmdRes.arg);
-    }
-    else if (cmdRes.cmd == "get")
-    {
-        bool found = false;
-        for (size_t i = 0; i < curRoom.groundItems.size(); i++)
-        {
-            if (curRoom.groundItems[i]->name == cmdRes.arg)
-            {
-                auto it = curRoom.groundItems[i];
-                if (m_player->pickUpItem(it))
-                {
-                    curRoom.groundItems.erase(curRoom.groundItems.begin() + i);
-                }
-                found = true;
-                break;
-            }
-        }
-        if (!found) std::cout << "地面没有这个物品！\n";
-    }
-    else if (cmdRes.cmd == "drop")
-    {
-        auto item = m_player->dropItem(cmdRes.arg);
-        if (item != nullptr) curRoom.groundItems.push_back(item);
     }
     else if (cmdRes.cmd == "chest")
     {
@@ -182,15 +155,19 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     else if (cmdRes.cmd == "kill")
     {
         int battleRet = BattleSystem::startFight(*m_player, curRoom, cmdRes.arg);
-        //battleRet = 1击杀成功；0死亡；2斗篷逃跑（怪物存活）
-        if(battleRet == 1 && curRoom.id ==8)
+        //【12】8号房间击杀深渊魔物后校验通关
+        if (battleRet == 1 && curRoom.id == 8)
         {
-            ChestStory::checkWinCondition(*m_player);
+            bool win = ChestStory::checkWinCondition(*m_player);
+            if (win)
+            {
+                exit(0);
+            }
         }
     }
     else if (cmdRes.cmd == "talk")
     {
-        ShopNpcLogic::npcTalk(curRoom, *m_player,cmdRes.arg);
+        ShopNpcLogic::npcTalk(curRoom, *m_player, cmdRes.arg);
     }
     else if (cmdRes.cmd == "shop")
     {
@@ -216,10 +193,10 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     }
     else if (cmdRes.cmd == "look")
     {
-        YELLOW;
+        YELLOW; //【13】look面板黄色
         std::cout << "\n【" << curRoom.name << "】" << curRoom.description << "\n";
         WHITE;
-        if(curRoom.hasChest && !curRoom.chestOpened)
+        if (curRoom.hasChest && !curRoom.chestOpened)
         {
             GREEN;
             std::cout << "★本房间存在未开启的宝箱！\n";
@@ -233,7 +210,7 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
         for (auto& m : curRoom.monsters) { if (m->hp > 0) { std::cout << "- " << m->name << " hp:" << m->hp << "\n"; hasMonster = true; } }
         if (!hasMonster) std::cout << "本房间怪物已全部清除\n";
         std::cout << "----在场NPC----\n";
-        if(curRoom.npcs.empty())
+        if (curRoom.npcs.empty())
         {
             std::cout << "无NPC\n";
         }
@@ -244,6 +221,7 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     }
     else if (cmdRes.cmd == "map")
     {
+        BLUE; //【13】地图蓝色
         std::cout << "\n====地牢房间列表====" << std::endl;
         for (auto& r : m_roomList)
         {
@@ -252,11 +230,12 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
             if (r->giveKey) std::cout << "【可获取钥匙】";
             std::cout << "\n";
         }
+        WHITE;
         std::cout << "请输入要前往的房间数字：";
         std::string numStr;
         std::getline(std::cin, numStr);
         int targetId = safeStringToInt(numStr);
-        if(targetId == -9999)
+        if (targetId == -9999)
         {
             RED;
             std::cout << "未知输入，请重试\n";
@@ -264,6 +243,11 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
             return;
         }
         moveToRoom(targetId, *m_player, m_roomList);
+        //【12】到达8号出口房间校验通关
+        if (targetId == 8)
+        {
+            ChestStory::checkWinCondition(*m_player);
+        }
     }
     else if (cmdRes.cmd == "help")
     {
