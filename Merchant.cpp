@@ -1,4 +1,5 @@
 #include "Merchant.h"
+#include "Player.h"
 #include <iostream>
 
 // 静态全局：全局标记幸运药水是否已经售出，所有商人共用
@@ -13,6 +14,11 @@ void Merchant::showShop()
     std::cout << "\n====商人商店====" << std::endl;
     for (auto& g : shopGoods)
     {
+        //【需求7】购买幸运药水后不再显示
+        if (g.first->name == "幸运药水" && g_soldLuckyPotion)
+        {
+            continue;
+        }
         std::cout << g.first->name << "【" << g.first->type << "】 "
             << g.first->desc << " 价格:" << g.second << "金币\n";
     }

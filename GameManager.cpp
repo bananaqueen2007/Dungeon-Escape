@@ -132,7 +132,7 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
 
     if (cmdRes.cmd == "inv")
     {
-        YELLOW; //【13】面板黄色
+        YELLOW;
         m_player->showInventory();
         WHITE;
     }
@@ -155,7 +155,6 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     else if (cmdRes.cmd == "kill")
     {
         int battleRet = BattleSystem::startFight(*m_player, curRoom, cmdRes.arg);
-        //【12】8号房间击杀深渊魔物后校验通关
         if (battleRet == 1 && curRoom.id == 8)
         {
             bool win = ChestStory::checkWinCondition(*m_player);
@@ -193,7 +192,7 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     }
     else if (cmdRes.cmd == "look")
     {
-        YELLOW; //【13】look面板黄色
+        YELLOW;
         std::cout << "\n【" << curRoom.name << "】" << curRoom.description << "\n";
         WHITE;
         if (curRoom.hasChest && !curRoom.chestOpened)
@@ -221,13 +220,13 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
     }
     else if (cmdRes.cmd == "map")
     {
-        BLUE; //【13】地图蓝色
+        BLUE;
         std::cout << "\n====地牢房间列表====" << std::endl;
         for (auto& r : m_roomList)
         {
             std::cout << r->id << "-" << r->name;
             if (r->locked) std::cout << "【上锁】";
-            if (r->giveKey) std::cout << "【可获取钥匙】";
+            //【需求1 删除【可获取钥匙】标签】
             std::cout << "\n";
         }
         WHITE;
@@ -243,7 +242,6 @@ void GameManager::handleCommand(const CommandResult& cmdRes)
             return;
         }
         moveToRoom(targetId, *m_player, m_roomList);
-        //【12】到达8号出口房间校验通关
         if (targetId == 8)
         {
             ChestStory::checkWinCondition(*m_player);

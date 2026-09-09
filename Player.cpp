@@ -87,7 +87,7 @@ std::shared_ptr<Item> Player::dropItem(const std::string& itemName)
     {
         if (backpack[i]->name == itemName)
         {
-            //【18】红宝石禁止卖出
+            //红宝石禁止卖出
             if (backpack[i]->name == "红宝石")
             {
                 std::cout << "红宝石是关键道具，不能丢弃/卖出！\n";

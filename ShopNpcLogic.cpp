@@ -16,11 +16,13 @@ void ShopNpcLogic::npcTalk(Room& room, Player& player, const std::string& npcNam
             npc->talk();
             if (npcName == "鼠鼠大王")
             {
-                //【9】拿到礼物后不再触发
-                if (!npc->triggeredOnce && !player.hasBoneKey)
+                if (!player.hasBoneKey)
                 {
-                    npc->triggeredOnce = true;
-                    ChestStory::meetMouseKing(player);
+                    bool getGift = ChestStory::meetMouseKing(player);
+                    if (getGift)
+                    {
+                        npc->triggeredOnce = true;
+                    }
                 }
             }
             return;
@@ -36,7 +38,7 @@ bool ShopNpcLogic::openShop(Room& curRoom)
         Merchant* mer = dynamic_cast<Merchant*>(npc.get());
         if (mer != nullptr)
         {
-            BLUE; //【13】商店页面蓝色
+            BLUE;
             mer->showShop();
             WHITE;
             return true;
@@ -67,7 +69,6 @@ bool ShopNpcLogic::sellGoods(Player& player, const std::string& itemName)
     if (dropPtr != nullptr)
     {
         int price = 0;
-        //【5】修正所有杂物卖出单价
         if (itemName == "蝙蝠的翅膀") price = 10;
         else if (itemName == "夜明砂") price = 15;
         else if (itemName == "生锈的刀") price = 9;
@@ -77,7 +78,7 @@ bool ShopNpcLogic::sellGoods(Player& player, const std::string& itemName)
         else if (itemName == "散发着诡异光芒的晶核") price = 50;
         else if (itemName == "破损的蛛丝") price = 15;
         else if (itemName == "完好的蛛丝") price = 40;
-        else price = 30; //兜底
+        else price = 30;
 
         int sellPrice = dropPtr->stackCount * price;
         player.gold += sellPrice;
