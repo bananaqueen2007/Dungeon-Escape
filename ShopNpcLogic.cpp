@@ -7,7 +7,7 @@
 #define BLUE  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),9)
 #define WHITE SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),7)
 
-void ShopNpcLogic::npcTalk(Room& room, Player& player, const std::string& npcName)
+void ShopNpcLogic::npcTalk(Room& room, Player& player, const string& npcName)
 {
     for (auto& npc : room.npcs)
     {
@@ -28,7 +28,7 @@ void ShopNpcLogic::npcTalk(Room& room, Player& player, const std::string& npcNam
             return;
         }
     }
-    std::cout << "房间内找不到这个NPC！" << std::endl;
+    cout << "房间内找不到这个NPC！" << endl;
 }
 
 bool ShopNpcLogic::openShop(Room& curRoom)
@@ -44,11 +44,11 @@ bool ShopNpcLogic::openShop(Room& curRoom)
             return true;
         }
     }
-    std::cout << "这里没有黑市商人，无法打开商店！" << std::endl;
+    cout << "这里没有黑市商人，无法打开商店！" << endl;
     return false;
 }
 
-bool ShopNpcLogic::buyGoods(Player& player, Room& curRoom, const std::string& goodsName)
+bool ShopNpcLogic::buyGoods(Player& player, Room& curRoom, const string& goodsName)
 {
     for (auto& npc : curRoom.npcs)
     {
@@ -59,11 +59,11 @@ bool ShopNpcLogic::buyGoods(Player& player, Room& curRoom, const std::string& go
             return true;
         }
     }
-    std::cout << "当前位置没有商人！" << std::endl;
+    cout << "当前位置没有商人！" << endl;
     return false;
 }
 
-bool ShopNpcLogic::sellGoods(Player& player, const std::string& itemName)
+bool ShopNpcLogic::sellGoods(Player& player, const string& itemName)
 {
     auto dropPtr = player.dropItem(itemName);
     if (dropPtr != nullptr)
@@ -82,7 +82,7 @@ bool ShopNpcLogic::sellGoods(Player& player, const std::string& itemName)
 
         int sellPrice = dropPtr->stackCount * price;
         player.gold += sellPrice;
-        std::cout << "卖出物品，获得" << sellPrice << "金币。" << std::endl;
+        cout << "卖出物品，获得" << sellPrice << "金币。" << endl;
         return true;
     }
     return false;

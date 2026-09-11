@@ -5,14 +5,15 @@
 #include <vector>
 #include <memory>
 #include "Item.h"
+using namespace std;
 
 struct Npc
 {
-    std::string name;
-    std::string talkText;
+    string name;
+    string talkText;
     bool triggeredOnce; //是否已经触发过对话
 
-    Npc(std::string n, std::string t);
+    Npc(string n, string t);
     virtual void talk();
     virtual ~Npc() = default;
 };

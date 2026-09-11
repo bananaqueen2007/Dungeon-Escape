@@ -5,14 +5,16 @@
 #include "Room.h"
 #include <vector>
 
+using namespace std;
+
 class ChestStory
 {
 public:
     static bool meetMouseKing(Player& player);
     static void openRoomChest(Player& player, Room& curRoom);
-    static bool collectGem(Player& player, const std::string& gemName);
+    static bool collectGem(Player& player, const string& gemName);
     static bool checkWinCondition(Player& player);
-    static std::vector<std::string> gemList;
+    static vector<string> gemList;
 };
 
 #endif

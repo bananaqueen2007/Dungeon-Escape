@@ -6,11 +6,12 @@
 #include <memory>
 #include <string>
 #include "Item.h"
+using namespace std;
 
 class Player
 {
 public:
-    std::string name;
+    string name;
     int hp;
     int maxHp;
     int baseAtk;
@@ -26,20 +27,20 @@ public:
     int reduceTurn;
     int poisonTurn;
 
-    std::shared_ptr<Item> equipWeapon;
+    shared_ptr<Item> equipWeapon;
 
-    std::vector<std::shared_ptr<Item>> backpack;
+    vector<shared_ptr<Item>> backpack;
 
     const int BACKPACK_MAX_SIZE = 15;
 
-    Player(std::string playerName);
+    Player(string playerName);
     void calcTotalAttack();
     void takeDamage(int damage);
-    bool useItem(const std::string& itemName);
-    bool equipItem(const std::string& itemName);
-    bool unequipItem(const std::string& type);
-    bool pickUpItem(std::shared_ptr<Item> item, bool isBuy = false);
-    std::shared_ptr<Item> dropItem(const std::string& itemName);
+    bool useItem(const string& itemName);
+    bool equipItem(const string& itemName);
+    bool unequipItem(const string& type);
+    bool pickUpItem(shared_ptr<Item> item, bool isBuy = false);
+    shared_ptr<Item> dropItem(const string& itemName);
     void showInventory();
     bool isBackpackFull() const;
 };

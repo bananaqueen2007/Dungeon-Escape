@@ -1,7 +1,8 @@
 #include "Player.h"
 #include"ChestStory.h"
+using namespace std;
 
-Player::Player(std::string playerName)
+Player::Player(string playerName)
 {
     name = playerName;
     hp = 50;
@@ -36,14 +37,14 @@ void Player::takeDamage(int damage)
     int realDmg = static_cast<int>(damage * damageReduce);
     hp -= realDmg;
     if (hp < 0) hp = 0;
-    std::cout << name << " 受到 " << realDmg << " 点伤害！剩余血量：" << hp << std::endl;
+    cout << name << " 受到 " << realDmg << " 点伤害！剩余血量：" << hp << endl;
 }
 
-bool Player::pickUpItem(std::shared_ptr<Item> item, bool isBuy)
+bool Player::pickUpItem(shared_ptr<Item> item, bool isBuy)
 {
     if (isBackpackFull())
     {
-        std::cout << "背包已满，无法拾取物品！" << std::endl;
+        cout << "背包已满，无法拾取物品！" << endl;
         return false;
     }
 
@@ -56,7 +57,7 @@ bool Player::pickUpItem(std::shared_ptr<Item> item, bool isBuy)
         {
             maxHp += 10;
             hp += 10;
-            std::cout << "红宝石力量涌动！最大生命值+10\n";
+            cout << "红宝石力量涌动！最大生命值+10\n";
         }
         return true;
     }
@@ -67,21 +68,21 @@ bool Player::pickUpItem(std::shared_ptr<Item> item, bool isBuy)
         {
             p->stackCount += item->stackCount;
             if (!isBuy)
-                std::cout << "拾取到了：" << item->name << std::endl;
+                cout << "拾取到了：" << item->name << endl;
             else
-                std::cout << "购买成功：" << item->name << std::endl;
+                cout << "购买成功：" << item->name << endl;
             return true;
         }
     }
     backpack.push_back(item);
     if (!isBuy)
-        std::cout << "拾取到了：" << item->name << std::endl;
+        cout << "拾取到了：" << item->name << endl;
     else
-        std::cout << "购买成功：" << item->name << std::endl;
+        cout << "购买成功：" << item->name << endl;
     return true;
 }
 
-std::shared_ptr<Item> Player::dropItem(const std::string& itemName)
+shared_ptr<Item> Player::dropItem(const string& itemName)
 {
     for (size_t i = 0; i < backpack.size(); i++)
     {
@@ -90,7 +91,7 @@ std::shared_ptr<Item> Player::dropItem(const std::string& itemName)
             //红宝石禁止卖出
             if (backpack[i]->name == "红宝石")
             {
-                std::cout << "红宝石是关键道具，不能丢弃/卖出！\n";
+                cout << "红宝石是关键道具，不能丢弃/卖出！\n";
                 return nullptr;
             }
 
@@ -99,10 +100,10 @@ std::shared_ptr<Item> Player::dropItem(const std::string& itemName)
             {
                 equipWeapon = nullptr;
                 calcTotalAttack();
-                std::cout << "卸下已装备武器！" << std::endl;
+                cout << "卸下已装备武器！" << endl;
             }
             backpack.erase(backpack.begin() + i);
-            std::cout << "丢弃物品：" << res->name << std::endl;
+            cout << "丢弃物品：" << res->name << endl;
             return res;
         }
     }
@@ -111,15 +112,15 @@ std::shared_ptr<Item> Player::dropItem(const std::string& itemName)
         auto res = equipWeapon;
         equipWeapon = nullptr;
         calcTotalAttack();
-        std::cout << "卸下已装备武器，丢弃！" << std::endl;
+        cout << "卸下已装备武器，丢弃！" << endl;
         return res;
     }
 
-    std::cout << "背包找不到该物品！" << std::endl;
+    cout << "背包找不到该物品！" << endl;
     return nullptr;
 }
 
-bool Player::equipItem(const std::string& itemName)
+bool Player::equipItem(const string& itemName)
 {
     for (auto& it : backpack)
     {
@@ -130,7 +131,7 @@ bool Player::equipItem(const std::string& itemName)
                 if (equipWeapon != nullptr)
                 {
                     backpack.push_back(equipWeapon);
-                    std::cout << "旧武器放回背包\n";
+                    cout << "旧武器放回背包\n";
                 }
                 equipWeapon = it;
                 for (auto iter = backpack.begin(); iter != backpack.end(); ++iter)
@@ -142,48 +143,48 @@ bool Player::equipItem(const std::string& itemName)
                     }
                 }
                 calcTotalAttack();
-                std::cout << "装备武器成功！总攻击力：" << totalAtk << std::endl;
+                cout << "装备武器成功！总攻击力：" << totalAtk << endl;
                 return true;
             }
             else
             {
-                std::cout << "该物品不能穿戴！" << std::endl;
+                cout << "该物品不能穿戴！" << endl;
                 return false;
             }
         }
     }
-    std::cout << "背包没有这个物品！" << std::endl;
+    cout << "背包没有这个物品！" << endl;
     return false;
 }
 
-bool Player::unequipItem(const std::string& type)
+bool Player::unequipItem(const string& type)
 {
     if (type == "weapon" || type == "武器")
     {
         if (!equipWeapon)
         {
-            std::cout << "当前没有装备武器\n";
+            cout << "当前没有装备武器\n";
             return false;
         }
         if (isBackpackFull())
         {
-            std::cout << "背包已满，无法卸下！\n";
+            cout << "背包已满，无法卸下！\n";
             return false;
         }
         backpack.push_back(equipWeapon);
-        std::cout << "卸下武器：" << equipWeapon->name << "放回背包\n";
+        cout << "卸下武器：" << equipWeapon->name << "放回背包\n";
         equipWeapon = nullptr;
         calcTotalAttack();
         return true;
     }
     else
     {
-        std::cout << "unequip 参数：武器\n";
+        cout << "unequip 参数：武器\n";
         return false;
     }
 }
 
-bool Player::useItem(const std::string& itemName)
+bool Player::useItem(const string& itemName)
 {
     for (size_t i = 0; i < backpack.size(); ++i)
     {
@@ -200,37 +201,37 @@ bool Player::useItem(const std::string& itemName)
             return true;
         }
     }
-    std::cout << "未找到可使用的消耗品" << std::endl;
+    cout << "未找到可使用的消耗品" << endl;
     return false;
 }
 
 void Player::showInventory()
 {
-    std::cout << "\n===== 角色背包面板 =====" << std::endl;
-    std::cout << "姓名:" << name << " 血量:" << hp << "/" << maxHp << std::endl;
-    std::cout << "基础攻击:" << baseAtk << "总攻击:" << totalAtk << "金币:" << gold << std::endl;
-    std::cout << "宝石收集数量:" << ChestStory::gemList.size() << "/6 ";
-    if (hasBoneKey) std::cout << "【持有骸骨密室钥匙】";
-    std::cout << std::endl;
+    cout << "\n===== 角色背包面板 =====" << endl;
+    cout << "姓名:" << name << " 血量:" << hp << "/" << maxHp << endl;
+    cout << "基础攻击:" << baseAtk << "总攻击:" << totalAtk << "金币:" << gold << endl;
+    cout << "宝石收集数量:" << ChestStory::gemList.size() << "/6 ";
+    if (hasBoneKey) cout << "【持有骸骨密室钥匙】";
+    cout << endl;
 
     if (equipWeapon)
-        std::cout << "已装备武器:" << equipWeapon->name << std::endl;
+        cout << "已装备武器:" << equipWeapon->name << endl;
     else
-        std::cout << "已装备武器:无" << std::endl;
+        cout << "已装备武器:无" << endl;
 
-    std::cout << "-----背包物品-----" << std::endl;
+    cout << "-----背包物品-----" << endl;
     if (backpack.empty())
     {
-        std::cout << "(背包为空)" << std::endl;
+        cout << "(背包为空)" << endl;
     }
     else
     {
         for (auto& item : backpack)
         {
-            std::cout << "[" << item->name << "] x" << item->stackCount << " | " << item->desc << "【" << item->type << "】" << std::endl;
+            cout << "[" << item->name << "] x" << item->stackCount << " | " << item->desc << "【" << item->type << "】" << endl;
         }
     }
-    std::cout << "======================\n" << std::endl;
+    cout << "======================\n" << endl;
 }
 
 bool Player::isBackpackFull() const

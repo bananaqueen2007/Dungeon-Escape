@@ -5,16 +5,17 @@
 #include <memory>
 #include <vector>
 #include "Item.h"
+using namespace std;
 
 struct Monster
 {
-    std::string name;
+    string name;
     int hp;
     int attack;
     int rewardGold;
-    std::vector<std::shared_ptr<Item>> dropItems;
+    vector<shared_ptr<Item>> dropItems;
 
-    Monster(std::string n, int h, int atk, int gold);
+    Monster(string n, int h, int atk, int gold);
 };
 
 #endif

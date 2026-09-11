@@ -1,11 +1,12 @@
 #include "Npc.h"
 #include <iostream>
+using namespace std;
 
-Npc::Npc(std::string n, std::string t)
+Npc::Npc(string n, string t)
     :name(n), talkText(t), triggeredOnce(false) {
 }
 
 void Npc::talk()
 {
-    std::cout << "¡¾" << name << "¡¿£º" << talkText << "\n";
+    cout << "¡¾" << name << "¡¿£º" << talkText << "\n";
 }

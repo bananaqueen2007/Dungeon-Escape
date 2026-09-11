@@ -3,6 +3,7 @@
 #include <iostream>
 #include <windows.h>
 #include <vector>
+using namespace std;
 
 extern int batKillCount;
 int batKillCount = 0;
@@ -10,11 +11,11 @@ int batKillCount = 0;
 #define RED  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),12)
 #define WHITE SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),7)
 
-int BattleSystem::startFight(Player& player, Room& currentRoom, const std::string& monsterName)
+int BattleSystem::startFight(Player& player, Room& currentRoom, const string& monsterName)
 {
     //====修复bug9：仅打强敌才校验对应小怪存活，打小怪不拦截====
     bool isBigMonster = false;
-    std::vector<std::string> requiredMinions;
+    vector<string> requiredMinions;
     if (monsterName == "巨型蟾蜍") {
         isBigMonster = true;
         requiredMinions = { "小蟾蜍" };
@@ -68,12 +69,12 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
 
     if (targetMonster == nullptr)
     {
-        std::cout << "当前房间没有该活着的怪物！" << std::endl;
+        cout << "当前房间没有该活着的怪物！" << endl;
         return 0;
     }
 
     RED;
-    std::cout << "\n====战斗开始！对阵：" << targetMonster->name << "====" << std::endl;
+    cout << "\n====战斗开始！对阵：" << targetMonster->name << "====" << endl;
     player.calcTotalAttack();
 
     bool hasCloak = (false);
@@ -81,16 +82,16 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
 
     if (canCloakEscape)
     {
-        std::cout << "\n【你穿戴暗影斗篷，可以选择隐匿逃跑！】\n";
-        std::cout << "1 - 发起攻击，正常战斗\n";
-        std::cout << "2 - 使用暗影斗篷隐匿逃跑（本次战斗无任何战利品，怪物依旧存活）\n";
-        std::cout << "请输入选择：";
+        cout << "\n【你穿戴暗影斗篷，可以选择隐匿逃跑！】\n";
+        cout << "1 - 发起攻击，正常战斗\n";
+        cout << "2 - 使用暗影斗篷隐匿逃跑（本次战斗无任何战利品，怪物依旧存活）\n";
+        cout << "请输入选择：";
         char op;
-        std::cin >> op;
-        std::cin.ignore();
+        cin >> op;
+        cin.ignore();
         if (op == '2')
         {
-            std::cout << "你披上暗影斗篷悄悄隐匿逃走，没有获得任何战利品！怪物仍然在这里！\n";
+            cout << "你披上暗影斗篷悄悄隐匿逃走，没有获得任何战利品！怪物仍然在这里！\n";
             WHITE;
             return 2;
         }
@@ -102,23 +103,23 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
     {
         //玩家回合
         player.calcTotalAttack();
-        std::cout << "【你的回合】你的攻击力：" << player.totalAtk << std::endl;
+        cout << "【你的回合】你的攻击力：" << player.totalAtk << endl;
         int dmgDeal = player.totalAtk;
         targetMonster->hp -= dmgDeal;
-        std::cout << "你对" << targetMonster->name << "造成 " << dmgDeal << "点伤害" << std::endl;
+        cout << "你对" << targetMonster->name << "造成 " << dmgDeal << "点伤害" << endl;
 
         //吸血刀逻辑：敌人掉多少血量，玩家回复多少血量【需求5】
         if (player.equipWeapon && player.equipWeapon->name == "吸血刀")
         {
             player.hp += dmgDeal;
             if (player.hp > player.maxHp) player.hp = player.maxHp;
-            std::cout << "吸血刀吸取生命！恢复" << dmgDeal << "血量\n";
+            cout << "吸血刀吸取生命！恢复" << dmgDeal << "血量\n";
         }
 
         //怪物死亡
         if (targetMonster->hp <= 0)
         {
-            std::cout << targetMonster->name << " 被你击杀！" << std::endl;
+            cout << targetMonster->name << " 被你击杀！" << endl;
             if (targetMonster->name == "小蝙蝠")
             {
                 batKillCount++;
@@ -126,7 +127,7 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
                 {
                     auto rustKnife = std::make_shared<Item>("生锈的刀", "攻击+3，可以卖钱", "武器", 3);
                     rustKnife->stackCount = 1;
-                    std::cout << "【特殊掉落】击杀累计5只蝙蝠，掉落生锈的刀！\n";
+                    cout << "【特殊掉落】击杀累计5只蝙蝠，掉落生锈的刀！\n";
                     player.pickUpItem(rustKnife);
                 }
             }
@@ -136,7 +137,7 @@ int BattleSystem::startFight(Player& player, Room& currentRoom, const std::strin
         }
 
         //怪物回合
-        std::cout << "【怪物回合】" << targetMonster->name << "发起攻击！" << std::endl;
+        cout << "【怪物回合】" << targetMonster->name << "发起攻击！" << endl;
         player.takeDamage(targetMonster->attack);
 
         //毒蜘蛛上毒
