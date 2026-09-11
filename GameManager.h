@@ -10,20 +10,22 @@
 #include "ChestStory.h"
 #include <vector>
 
+using namespace std;
+
 class GameManager
 {
 public:
     void showMainMenu();
     void gameLoop();
 private:
-    std::unique_ptr<Player> m_player;
-    std::vector<std::shared_ptr<Room>> m_roomList;
+    unique_ptr<Player> m_player;
+    vector<shared_ptr<Room>> m_roomList;
 
     void initRooms();
     void handleCommand(const CommandResult& cmdRes);
     void checkGameStatus();
     void printHelpText();
-    int safeStringToInt(const std::string& s);
+    int safeStringToInt(const string& s);
 };
 
 #endif

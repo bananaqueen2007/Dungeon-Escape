@@ -2,17 +2,18 @@
 #define COMMANDPARSER_H
 
 #include<string>
+using namespace std;
 
 struct CommandResult
 {
-    std::string cmd;
-    std::string arg;
+    string cmd;
+    string arg;
 };
 
 class CommandParser
 {
 public:
-    static CommandResult parse(const std::string& input);
+    static CommandResult parse(const string& input);
 };
 
 #endif

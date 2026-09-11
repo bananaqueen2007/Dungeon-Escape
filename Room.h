@@ -9,32 +9,33 @@
 #include "Npc.h"
 #include "Item.h"
 #include "Player.h"
+using namespace std;
 
 
 struct Room
 {
     int id;
-    std::string name;
-    std::string description;
+    string name;
+    string description;
     bool locked;
     bool giveKey;
     bool chestOpened;
     bool hasChest;
 
 
-    std::vector<std::unique_ptr<Monster>> monsters;
-    std::vector<std::shared_ptr<Npc>> npcs;
-    std::vector<std::shared_ptr<Item>> groundItems;
+    vector<unique_ptr<Monster>> monsters;
+    vector<shared_ptr<Npc>> npcs;
+    vector<shared_ptr<Item>> groundItems;
 
 
     Room() = default;
-    Room(int id_, std::string n_, std::string d_);
-    Room(int id_, std::string n_, std::string d_, bool lock_, bool keyRoom, bool hasChest_ = true);
+    Room(int id_, string n_, string d_);
+    Room(int id_, string n_, string d_, bool lock_, bool keyRoom, bool hasChest_ = true);
 };
 
 
-void initAllRooms(std::vector<std::shared_ptr<Room>>& roomList);
-bool moveToRoom(int targetId, Player& player, std::vector<std::shared_ptr<Room>>& roomList);
+void initAllRooms(vector<shared_ptr<Room>>& roomList);
+bool moveToRoom(int targetId, Player& player, vector<shared_ptr<Room>>& roomList);
 bool roomHasAliveMonster(Room& curRoom);
 
 #endif
