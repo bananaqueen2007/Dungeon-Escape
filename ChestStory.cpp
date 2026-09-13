@@ -1,6 +1,11 @@
 #include "ChestStory.h"
 #include <iostream>
 #include <windows.h>
+#include <vector>
+#include <string>
+#include <memory>
+#include <cstdlib>
+#include <limits>
 
 #define GREEN  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),10)
 #define WHITE SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),7)
@@ -52,30 +57,41 @@ void ChestStory::openRoomChest(Player& player, Room& curRoom)
         WHITE;
         return;
     }
+
     cout << "你来到房间的宝箱前！" << std::endl;
+
     switch (curRoom.id)
     {
-    case 1: //幽暗回廊：红宝石+烤鸡
+    case 1: // 幽暗回廊：红宝石+烤鸡
         player.pickUpItem(make_shared<Item>("烤鸡", "恢复30生命", "消耗品", 0));
         player.pickUpItem(make_shared<Item>("红宝石", "最大生命值提高10，通关宝石", "宝石", 0));
         curRoom.chestOpened = true;
         break;
-    case 2:
+
+    case 2: // 吸血刀房间
         player.pickUpItem(make_shared<Item>("吸血刀", "攻击+20，攻击造成伤害全额转为自身血量", "武器", 20));
         curRoom.chestOpened = true;
         break;
-    case 3:
+
+    case 3: // 金币赌博宝箱【修复ignore阻塞问题】
     {
+        curRoom.chestOpened = true;
         cout << "投入金币进行赌博(输入数字):";
-        string s; getline(cin, s);
+        string s;
+        do
+        {
+            getline(cin, s);
+        } while (s.empty());
+
         int bet;
         try { bet = stoi(s); }
-        catch (...) {
+        catch (...)
+        {
             cout << "未知输入，放弃开启宝箱。";
             WHITE;
             return;
         }
-        // 修改：分开判断0负数 和 金币不足
+
         if (bet <= 0)
         {
             cout << "输入金额不能为0或负数";
@@ -88,19 +104,21 @@ void ChestStory::openRoomChest(Player& player, Room& curRoom)
             WHITE;
             return;
         }
-        curRoom.chestOpened = true;
+
         if (rand() % 2 == 0)
         {
             player.gold += bet;
             cout << "翻倍！获得" << bet << "金币！";
         }
-        else {
+        else
+        {
             player.gold -= bet;
             cout << "金币全部清零！";
         }
     }
     break;
-    case 4:
+
+    case 4: // 攻击力检测宝箱
     {
         curRoom.chestOpened = true;
         if (player.totalAtk >= 50)
@@ -108,13 +126,15 @@ void ChestStory::openRoomChest(Player& player, Room& curRoom)
             player.gold += 500;
             cout << "攻击力足够，拿到500金币！";
         }
-        else {
+        else
+        {
             player.hp -= 20;
             cout << "攻击力不足，损失20生命！";
         }
     }
     break;
-    case 5:
+
+    case 5: // 换血换金币宝箱
     {
         curRoom.chestOpened = true;
         player.hp -= 20;
@@ -122,25 +142,47 @@ void ChestStory::openRoomChest(Player& player, Room& curRoom)
         cout << "损失20生命，获得1000金币！";
     }
     break;
-    case 6:
+
+    case 6: // 蜘蛛宝箱
     {
         curRoom.chestOpened = true;
-        cout << "碰宝箱？(y/n):"; char c; cin >> c; cin.ignore();
-        if (c == 'y' || c == 'Y') { player.hp -= 10; cout << "被蜘蛛袭击，损失10血量！"; }
+        cout << "碰宝箱？(y/n):";
+        char c;
+        cin >> c;
+        cin.ignore();
+        if (c == 'y' || c == 'Y')
+        {
+            player.hp -= 10;
+            cout << "被蜘蛛袭击，损失10血量！";
+        }
     }
     break;
-case7:
+
+    case 7: // 蘑菇苹果抉择宝箱【彻底修复cin.ignore卡死】
     {
+        curRoom.chestOpened = true;
         int sel = -1;
         while (true)
         {
             cout << "1.看起来很可疑的蘑菇  2.看起来很美味的苹果，请选择1/2：";
-            string selStr; getline(cin, selStr);
-            try { sel = stoi(selStr); }
-            catch (...) {
+            string selStr;
+            getline(cin, selStr);
+
+            if (selStr.empty())
+            {
+                continue;
+            }
+
+            try
+            {
+                sel = stoi(selStr);
+            }
+            catch (...)
+            {
                 cout << "\n输入错误！请输入数字1或者2\n";
                 continue;
             }
+
             if (sel == 1 || sel == 2)
             {
                 break;
@@ -150,23 +192,27 @@ case7:
                 cout << "\n输入错误！请输入数字1或者2\n";
             }
         }
-        curRoom.chestOpened = true;
+
         if (sel == 1)
         {
             cout << "\n蘑菇剧毒！早就告诉过你很可疑了......\n";
             player.hp = 0;
             player.currentRoomId = 1;
         }
-        else if (sel == 2) {
-            player.maxHp += 20; player.hp += 20;
+        else if (sel == 2)
+        {
+            player.maxHp += 20;
+            player.hp += 20;
             cout << "\n苹果非常美味，最大生命+20！\n";
         }
     }
     break;
-case8:
-    //地牢出口无宝箱
-    break;
+
+    case 8:
+        // 地牢出口无宝箱
+        break;
     }
+
     WHITE;
     cout << endl;
 }
